@@ -7,5 +7,6 @@ public class CameraConnection {
 	private SenderThread senderThread;
 	private ReceiverThread receiverThread;
 	private int timeDifference;
+	private Buffer buffer;
 
 }
