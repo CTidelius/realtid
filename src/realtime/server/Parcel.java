@@ -1,5 +1,5 @@
 package realtime.server;
 
-public class Camera {
+public class Parcel {
 
 }
