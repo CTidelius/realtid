@@ -31,3 +31,5 @@ GIT-SHIT!
  kolla vilka filer som finns "filed for commit"
 * git pull
 hämta allt senaste
+* git push
+pusha allt till master branch
