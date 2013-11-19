@@ -9,4 +9,11 @@ public class CameraConnection {
 	private int timeDifference;
 	private Buffer buffer;
 
+	
+	public CameraConnection(Buffer buffer) {
+		this.buffer = buffer;
+		socket = new Socket();
+		senderThread = new SenderThread();
+		receiverThread = new ReceiverThread();
+	}
 }
