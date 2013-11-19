@@ -18,14 +18,16 @@ public class Buffer {
 	public Buffer() {
 		mode = MODE_ASYNCH;
 		images = new ArrayList<PriorityQueue<ImageStruct>>();
-		images.add(new PriorityQueue<ImageStruct>());
-		
 	}
 	
 	public synchronized void putImg(byte[] data, int cameraIndex){
 		latestImgTEMP = data;
 	}
 
+	public synchronized void addCamera() {
+		images.add(new PriorityQueue<ImageStruct>());
+	}
+	
 	public synchronized int getMode() {
 		return mode;
 	}
