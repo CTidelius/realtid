@@ -2,6 +2,7 @@ package realtime.server;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 
 public class SenderThread extends Thread {
@@ -35,7 +36,9 @@ public class SenderThread extends Thread {
 				}
 				}
 				os.flush();
-			} catch (IOException e) {
+			} 
+			catch(SocketException ex) { }
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 //				e.printStackTrace();
 			}

@@ -21,8 +21,8 @@ public class ImageRetriever extends Thread {
 		while(!isInterrupted()) {
 			camera.getJPEG(buffer, 0);
 			monitor.putImage(buffer);
-			if(motionDetector.detect())
-				monitor.onMotionDetected();
+			//if(motionDetector.detect())
+				//monitor.onMotionDetected();
 		}
 	}
 }
