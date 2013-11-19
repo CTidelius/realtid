@@ -14,7 +14,7 @@ public class ReceiverThread extends Thread {
 	}
 
 	public void run() {
-		while (isInterrupted()) {
+		while (!isInterrupted()) {
 			try {
 				int msg = is.read();
 				if (msg == -1)
