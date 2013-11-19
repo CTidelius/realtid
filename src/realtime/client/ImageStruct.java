@@ -8,14 +8,18 @@ public class ImageStruct {
 
 	private byte[] image;
 	private long timestamp;
+	private int camIndex;
 
-	/** 
-	 * Create an image and a timestamp out of a byte array (size of 1 + 8 + Axis211A.IMAGE_BUFFER_SIZE)
+	/**
+	 * Create an image and a timestamp out of a byte array (size of 1 + 8 +
+	 * Axis211A.IMAGE_BUFFER_SIZE)
+	 * 
 	 * @param data
 	 */
-	public ImageStruct(byte[] data) {
+	public ImageStruct(byte[] data, int camIndex) {
 		timestamp = createTimestamp(data);
 		image = createImage(data);
+		this.camIndex = camIndex;
 	}
 
 	// Create timestamp out of data array
@@ -28,10 +32,14 @@ public class ImageStruct {
 	// Create image array out of data array
 	private byte[] createImage(byte[] data) {
 		byte[] tempImage = new byte[Axis211A.IMAGE_BUFFER_SIZE];
-		for (int i = 0; i < image.length; i++) {
+		for (int i = 0; i < tempImage.length; i++) {
 			image[i] = data[i + 9];
 		}
 		return tempImage;
+	}
+
+	public int getIndex() {
+		return camIndex;
 	}
 
 	public byte[] getImage() {

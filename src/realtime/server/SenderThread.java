@@ -40,8 +40,9 @@ public class SenderThread extends Thread {
 			catch(SocketException ex) { }
 			catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 	}
+	
 }

@@ -3,6 +3,7 @@ package realtime.client;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -10,25 +11,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame {
-	private ImagePanel leftPanel, rightPanel;
+	private ArrayList<ImagePanel> panels;
 
 	public GUI() {
 		setupGUI();
 	}
 
 	private void setupGUI() {
-		add(leftPanel = new ImagePanel());
-		add(rightPanel = new ImagePanel());
+		panels = new ArrayList<ImagePanel>();
+		
+		ImagePanel panel = new ImagePanel();
+		panels.add(panel);
+		add(panel);
 		
 		setPreferredSize(new Dimension(500, 500));
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 	}
-
-	public static void main(String[] args) {
-		new GUI();
+	
+	public void refreshPanel(byte[] data, int panelIndex){
+		panels.get(panelIndex).refresh(data);
 	}
+
 
 	static class ImagePanel extends JPanel {
 		ImageIcon icon;
