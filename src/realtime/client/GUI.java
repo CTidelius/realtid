@@ -2,27 +2,43 @@ package realtime.client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener{
 	private ArrayList<ImagePanel> panels;
 
 	public GUI() {
 		setupGUI();
 	}
+	
+
 
 	private void setupGUI() {
 		panels = new ArrayList<ImagePanel>();
 		
+		getContentPane().setLayout(new BorderLayout());
+		
+		JPanel topPanel = new JPanel(new FlowLayout());
+		add(topPanel, BorderLayout.NORTH);
+		
+		JButton button = new JButton("Add camera");
+		button.addActionListener(this);
+		add(button, BorderLayout.SOUTH);
+		
 		ImagePanel panel = new ImagePanel();
 		panels.add(panel);
-		add(panel);
+		topPanel.add(panel);
 		
 		setPreferredSize(new Dimension(500, 500));
 		setVisible(true);
@@ -33,8 +49,11 @@ public class GUI extends JFrame {
 	public void refreshPanel(ImageStruct image){
 		panels.get(image.getIndex()).refresh(image.getImage());
 	}
-
-
+	public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(null, "Camera added! (not)");
+	}
+	
+	
 	static class ImagePanel extends JPanel {
 		ImageIcon icon;
 
@@ -53,4 +72,8 @@ public class GUI extends JFrame {
 			icon.paintIcon(this, this.getGraphics(), 5, 5);
 		}
 	}
+
+
+
+
 }
