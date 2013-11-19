@@ -30,8 +30,8 @@ public class GUI extends JFrame {
 		pack();
 	}
 	
-	public void refreshPanel(byte[] data, int panelIndex){
-		panels.get(panelIndex).refresh(data);
+	public void refreshPanel(ImageStruct image){
+		panels.get(image.getIndex()).refresh(image.getImage());
 	}
 
 

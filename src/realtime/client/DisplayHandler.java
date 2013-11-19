@@ -25,14 +25,14 @@ public class DisplayHandler extends Thread {
 
 			case Buffer.MODE_ASYNCH:
 				//Uppdatera guit här
-				//gui.refresh(image.getImage(), image.getIndex());
+				gui.refreshPanel(image);
 				do {
 					image = buffer.getImage();
 				} while (image == null);
 			
 			case Buffer.MODE_SYNCH:
 				//Uppdatera guit här
-				//gui.refresh(image.getImage(), image.getIndex());
+				gui.refreshPanel(image);
 				sleepTime = (int) image.timestamp();
 				do {
 					image = buffer.getImage();
