@@ -15,4 +15,8 @@ public class Buffer {
 		images = new ArrayList<ArrayList<Object>>();
 	}
 	
+	
+	public synchronized int getMode() {
+		return mode;
+	}
 }
