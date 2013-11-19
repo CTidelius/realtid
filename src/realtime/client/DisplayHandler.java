@@ -28,7 +28,7 @@ public class DisplayHandler extends Thread {
 				//gui.refresh(image.getImage(), image.getIndex());
 				do {
 					image = buffer.getImage();
-				} while (image != null);
+				} while (image == null);
 			
 			case Buffer.MODE_SYNCH:
 				//Uppdatera guit här
@@ -36,7 +36,7 @@ public class DisplayHandler extends Thread {
 				sleepTime = (int) image.timestamp();
 				do {
 					image = buffer.getImage();
-				} while (image != null);
+				} while (image == null);
 				sleepTime = (int) (image.timestamp() - sleepTime);
 				try {
 					Thread.sleep(sleepTime);
