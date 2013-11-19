@@ -80,11 +80,11 @@ public class Monitor {
 				
 				SenderThread sender = new SenderThread(m, connection.getOutputStream());
 				sender.start();
-				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
-				recv.run(); //run on main thread
-				sender.interrupt();
-				connection.close();
-				System.out.println("Server closed");
+//				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
+//				recv.run(); //run on main thread
+//				sender.interrupt();
+//				connection.close();
+//				System.out.println("Server closed");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

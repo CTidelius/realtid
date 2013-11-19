@@ -15,12 +15,12 @@ public class CameraConnection {
 	private final String server = "127.0.0.1";
 	private final int port = 1337;
 
-	public CameraConnection(Buffer buffer) {
+	public CameraConnection(Buffer buffer, int cameraIndex) {
 		this.buffer = buffer;
 		try {
 			socket = new Socket(server, port);
 			senderThread = new SenderThread(socket.getOutputStream());
-			(receiverThread = new ReceiverThread(socket.getInputStream())).start();
+			(receiverThread = new ReceiverThread(socket.getInputStream(), buffer, cameraIndex)).start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -30,7 +30,7 @@ public class CameraConnection {
 	}
 	
 	public static void main(String[] args){
-		new CameraConnection(null);
+		new CameraConnection(new Buffer(), 1);
 	}
 	
 	

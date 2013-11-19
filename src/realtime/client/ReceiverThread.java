@@ -6,9 +6,13 @@ import java.io.InputStream;
 public class ReceiverThread extends Thread {	
 	
 	private InputStream is;
+	private Buffer buffer;
+	private int cameraIndex;
 	
-	public ReceiverThread(InputStream is){
+	public ReceiverThread(InputStream is, Buffer buffer, int cameraIndex){
 		this.is = is;
+		this.buffer = buffer;
+		this.cameraIndex = cameraIndex;
 	}
 	
 	public void run(){
@@ -16,7 +20,7 @@ public class ReceiverThread extends Thread {
 		try {
 			while(true){
 				is.read(b);
-				System.out.println(new String(b, "UTF-8"));
+				buffer.putImg(b, cameraIndex);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
