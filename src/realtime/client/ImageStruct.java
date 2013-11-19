@@ -20,14 +20,9 @@ public class ImageStruct {
 
 	// Create timestamp out of data array
 	private long createTimestamp(byte[] data) {
-		byte[] time = new byte[8];
-		for (int i = 0; i < 8; i++) {
-			time[i] = data[i + 1];
-		}
-		ByteBuffer buffer = ByteBuffer.allocate(8);
-		buffer.put(time);
-		buffer.flip(); // need flip
-		return buffer.getLong();
+		ByteBuffer bb = ByteBuffer.wrap(data, 1, 9);
+		bb.flip();
+		return bb.getLong();
 	}
 
 	// Create image array out of data array
