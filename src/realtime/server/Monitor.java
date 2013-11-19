@@ -73,8 +73,10 @@ public class Monitor {
 
 		try {
 			ServerSocket socket = new ServerSocket(1337);
+			System.out.println("Server running");
 			while (true) {
 				Socket connection = socket.accept();
+				System.out.println("Server accepted connection");
 				
 				SenderThread sender = new SenderThread(m, connection.getOutputStream());
 				sender.start();
@@ -82,6 +84,7 @@ public class Monitor {
 				recv.run(); //run on main thread
 				sender.interrupt();
 				connection.close();
+				System.out.println("Server closed");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
