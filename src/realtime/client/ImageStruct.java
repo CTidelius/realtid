@@ -32,7 +32,7 @@ public class ImageStruct {
 	// Create image array out of data array
 	private byte[] createImage(byte[] data) {
 		byte[] tempImage = new byte[Axis211A.IMAGE_BUFFER_SIZE];
-		for (int i = 0; i < image.length; i++) {
+		for (int i = 0; i < tempImage.length; i++) {
 			image[i] = data[i + 9];
 		}
 		return tempImage;
