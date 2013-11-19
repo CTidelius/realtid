@@ -24,17 +24,15 @@ public class Image {
 
 	// Create timestamp out of data array
 	private long createTimestamp(byte[] data) {
-		ByteBuffer bb = ByteBuffer.wrap(data, 1, 9);
-		bb.flip();
+		ByteBuffer bb = ByteBuffer.wrap(data, 0, 8);
+		//bb.flip();
 		return bb.getLong();
 	}
 
 	// Create image array out of data array
 	private byte[] createImage(byte[] data) {
 		byte[] tempImage = new byte[Axis211A.IMAGE_BUFFER_SIZE];
-		for (int i = 0; i < tempImage.length; i++) {
-			image[i] = data[i + 9];
-		}
+		System.arraycopy(data, 8, tempImage, 0, tempImage.length);
 		return tempImage;
 	}
 
