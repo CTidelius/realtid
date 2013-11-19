@@ -15,12 +15,11 @@ public class Buffer {
 	private ArrayList<PriorityQueue<ImageStruct>> images;
 
 
-	public Buffer(int nbrOfCameras) {
+	public Buffer() {
 		mode = MODE_ASYNCH;
 		images = new ArrayList<PriorityQueue<ImageStruct>>();
-		for (int i = 0; i < nbrOfCameras; i++) {
-			images.add(new PriorityQueue<ImageStruct>());
-		}
+		images.add(new PriorityQueue<ImageStruct>());
+		
 	}
 	
 	public synchronized void putImg(byte[] data, int cameraIndex){
