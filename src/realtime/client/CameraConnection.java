@@ -28,19 +28,4 @@ public class CameraConnection {
 		}
 
 	}
-	
-	public static void main(String[] args){
-		final Buffer buffer = new Buffer();
-		new CameraConnection(buffer, 1);
-		final GUI gui = new GUI();
-//		new Thread(){
-//			public void run(){
-//				while(true){
-//					gui.refreshPanel(buffer.getImg(), 0);
-//				}
-//			}
-//		}.start();
-	}
-	
-	
 }
