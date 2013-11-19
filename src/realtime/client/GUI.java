@@ -3,7 +3,6 @@ package realtime.client;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class GUI extends JFrame implements ActionListener{
 		pack();
 	}
 	
-	public void refreshPanel(Img image){
+	public void refreshPanel(Image image){
 
 		panels.get(image.getIndex()).refresh(image.getImage());
 	}
@@ -64,7 +63,7 @@ public class GUI extends JFrame implements ActionListener{
 		}
 
 		public void refresh(byte[] data) {
-			Image img = getToolkit().createImage(data);
+			java.awt.Image img = getToolkit().createImage(data);
 			getToolkit().prepareImage(img, -1, -1, null);
 			icon.setImage(img);
 			icon.paintIcon(this, this.getGraphics(), 5, 5);

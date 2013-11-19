@@ -13,16 +13,16 @@ public class Buffer {
 	private int mode;
 	private int sync;
 
-	private ArrayList<PriorityQueue<Img>> images;
+	private ArrayList<PriorityQueue<Image>> images;
 
 
 	public Buffer() {
 		mode = MODE_ASYNCH;
-		images = new ArrayList<PriorityQueue<Img>>();
+		images = new ArrayList<PriorityQueue<Image>>();
 	}
 
 	public synchronized void addCamera() {
-		images.add(new PriorityQueue<Img>());
+		images.add(new PriorityQueue<Image>());
 	}
 	
 	public synchronized int getMode() {
@@ -30,7 +30,7 @@ public class Buffer {
 	}
 	
 
-	public synchronized void putImage(Img image) {
+	public synchronized void putImage(Image image) {
 		images.get(image.getIndex()).add(image);
 
 	}
@@ -39,7 +39,7 @@ public class Buffer {
 		return sync;
 	}
 	
-	public synchronized Img getImage(){
+	public synchronized Image getImage(){
 		int imageToPull=0;
 		if (images.isEmpty()) return null;
 		for(int i=1;i<images.size();i++){

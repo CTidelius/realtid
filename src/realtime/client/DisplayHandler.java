@@ -14,7 +14,7 @@ public class DisplayHandler extends Thread {
 	}
 
 	public void run() {
-		Img image = null;
+		Image image = null;
 		do {
 			image = buffer.getImage();
 		} while (image == null);

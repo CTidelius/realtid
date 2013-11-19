@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 import se.lth.cs.cameraproxy.Axis211A;
 
-public class Img {
+public class Image {
 
 	private byte[] image;
 	private long timestamp;
@@ -16,7 +16,7 @@ public class Img {
 	 * 
 	 * @param data
 	 */
-	public Img(byte[] data, int camIndex) {
+	public Image(byte[] data, int camIndex) {
 		timestamp = createTimestamp(data);
 		image = createImage(data);
 		this.camIndex = camIndex;
