@@ -16,3 +16,18 @@ På serversidan: 2 trådar på en socket. Ena tråden sköter att ta emot det br
 Synch/osynch:
 
 När man connectar tar man lokal tid i klient. Frågar server om tid och får ett svar. Tiden det tog för svar genom 2 kommer ge pingen och m.h.a. den kan man räkna ut tidsskillnaden mellan klient och server. När servern sedan skickar bilder med timestamps jämför man tiden bilden skickades med tiden bilden togs emot för att räkna ut delay och då jämföra med andra bilder från andra servers. Blir skillnad större än 0.2s där vet man att man måste gå till osynch-mode. Annars sköter DisplayHandler synkronisering eftersom att den vet vilken tid bilderna togs. Spara offsets per kamera.
+
+
+GIT-SHIT!
+
+
+* git add -A
+ lägg till filer för commit
+* git checkout -- .
+ ta bort alla lokala changes (du kan ej pulla utan att ha committade lokala changes)
+* git commit -m "Meddelande"
+ committa med ett msg
+* git status
+ kolla vilka filer som finns "filed for commit"
+* git pull
+hämta allt senaste
