@@ -9,4 +9,10 @@ public class Buffer {
 	
 	private int mode;
 	private ArrayList<ArrayList<Object>> images;
+	
+	public Buffer() {
+		mode = MODE_IDLE;
+		images = new ArrayList<ArrayList<Object>>();
+	}
+	
 }
