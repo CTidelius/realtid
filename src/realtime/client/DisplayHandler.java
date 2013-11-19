@@ -23,20 +23,26 @@ public class DisplayHandler extends Thread {
 			sync = buffer.getSync();
 			switch (sync) {
 
-			case Buffer.UNSYNC:
-				gui.refresh(image.getImage(), image.getCamera());
-				do {
-					image = gui.getImage();
-				} while (image != null);
-			
-			case Buffer.SYNC:
-				gui.refresh(image.getImage(), image.getCamera());
-				sleepTime = image.getTime();
+			case Buffer.MODE_ASYNCH:
+				//Uppdatera guit här
+				//gui.refresh(image.getImage(), image.getIndex());
 				do {
 					image = buffer.getImage();
 				} while (image != null);
-				sleepTime = (image.getTime() - sleepTime());
-				Thread.sleep(sleepTime);
+			
+			case Buffer.MODE_SYNCH:
+				//Uppdatera guit här
+				//gui.refresh(image.getImage(), image.getIndex());
+				sleepTime = (int) image.timestamp();
+				do {
+					image = buffer.getImage();
+				} while (image != null);
+				sleepTime = (int) (image.timestamp() - sleepTime);
+				try {
+					Thread.sleep(sleepTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
