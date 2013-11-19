@@ -37,7 +37,7 @@ public class SenderThread extends Thread {
 				os.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 	}

@@ -26,6 +26,11 @@ public class Buffer {
 		latestImgTEMP = data;
 	}
 
+	public synchronized byte[] getImg(){
+		return latestImgTEMP;
+		
+	}
+	
 	public synchronized int getMode() {
 		return mode;
 	}
