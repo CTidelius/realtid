@@ -9,10 +9,16 @@ public class Buffer {
 
 	private int mode;
 	private ArrayList<ArrayList<ImageStruct>> images;
+	
+	private byte[] latestImgTEMP;
 
 	public Buffer() {
 		mode = MODE_IDLE;
 		images = new ArrayList<ArrayList<ImageStruct>>();
+	}
+	
+	public synchronized void putImg(byte[] data, int cameraIndex){
+		latestImgTEMP = data;
 	}
 
 	public synchronized int getMode() {
