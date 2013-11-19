@@ -9,6 +9,12 @@ public class DisplayHandler extends Thread {
 	}
 	
 	public void run() {
-		
+		while (true) {
+			
+			
+			
+			
+			
+		}
 	}
 }
