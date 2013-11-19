@@ -17,7 +17,7 @@ public class DisplayHandler extends Thread {
 		ImageStruct image = null;
 		do {
 			image = buffer.getImage();
-		} while (image != null);
+		} while (image == null);
 
 		while (true) {
 			sync = buffer.getSync();

@@ -54,6 +54,7 @@ public class Buffer {
 	
 	public synchronized ImageStruct getImage(){
 		int imageToPull=0;
+		if (images.isEmpty()) return null;
 		for(int i=1;i<images.size();i++){
 			if(images.get(imageToPull).peek().timestamp()<images.get(i).peek().timestamp()){
 				imageToPull=i;
