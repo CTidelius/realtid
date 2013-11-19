@@ -22,8 +22,6 @@ public class GUI extends JFrame implements ActionListener{
 		setupGUI();
 	}
 	
-
-
 	private void setupGUI() {
 		panels = new ArrayList<ImagePanel>();
 		
@@ -46,14 +44,14 @@ public class GUI extends JFrame implements ActionListener{
 		pack();
 	}
 	
-	public void refreshPanel(ImageStruct image){
+	public void refreshPanel(Img image){
+
 		panels.get(image.getIndex()).refresh(image.getImage());
 	}
 	public void actionPerformed(ActionEvent e) {
 		JOptionPane.showMessageDialog(null, "Camera added! (not)");
 	}
-	
-	
+		
 	static class ImagePanel extends JPanel {
 		ImageIcon icon;
 
@@ -72,8 +70,4 @@ public class GUI extends JFrame implements ActionListener{
 			icon.paintIcon(this, this.getGraphics(), 5, 5);
 		}
 	}
-
-
-
-
 }

@@ -27,10 +27,10 @@ public class ReceiverThread extends Thread {
 				switch (msg) {
 				case OpCodes.PUT_IMAGE:
 					int n = 8 + Axis211A.IMAGE_BUFFER_SIZE;
-					readBytes(8, is);
-					byte[] buf = readBytes(Axis211A.IMAGE_BUFFER_SIZE, is);
+					byte[] buf = readBytes(n, is);
+					Img img = new Img(buf, cameraIndex);
 					System.out.println(buf.length);
-					buffer.putImg(buf, 0);
+//					buffer.putImage(new Img(buf, cameraIndex));
 					break;
 				}
 

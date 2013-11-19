@@ -13,29 +13,16 @@ public class Buffer {
 	private int mode;
 	private int sync;
 
-
-	private byte[] latestImgTEMP;
-
-	private ArrayList<PriorityQueue<ImageStruct>> images;
+	private ArrayList<PriorityQueue<Img>> images;
 
 
 	public Buffer() {
 		mode = MODE_ASYNCH;
-		images = new ArrayList<PriorityQueue<ImageStruct>>();
-	}
-	
-	public synchronized void putImg(byte[] data, int cameraIndex){
-		latestImgTEMP = data;
-	}
-
-
-	public synchronized byte[] getImg(){
-		return latestImgTEMP;
+		images = new ArrayList<PriorityQueue<Img>>();
 	}
 
 	public synchronized void addCamera() {
-		images.add(new PriorityQueue<ImageStruct>());
-
+		images.add(new PriorityQueue<Img>());
 	}
 	
 	public synchronized int getMode() {
@@ -43,7 +30,7 @@ public class Buffer {
 	}
 	
 
-	public synchronized void putImage(ImageStruct image) {
+	public synchronized void putImage(Img image) {
 		images.get(image.getIndex()).add(image);
 
 	}
@@ -52,7 +39,7 @@ public class Buffer {
 		return sync;
 	}
 	
-	public synchronized ImageStruct getImage(){
+	public synchronized Img getImage(){
 		int imageToPull=0;
 		if (images.isEmpty()) return null;
 		for(int i=1;i<images.size();i++){
