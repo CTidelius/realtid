@@ -6,8 +6,12 @@ public class Buffer {
 
 	public static final int MODE_IDLE = 0;
 	public static final int MODE_MOVIE = 1;
-
+	public static final int UNSYNC = 0;
+	public static final int SYNC = 1;
+	
 	private int mode;
+	private int sync;
+	
 	private ArrayList<ArrayList<ImageStruct>> images;
 
 	public Buffer() {
@@ -17,5 +21,9 @@ public class Buffer {
 
 	public synchronized int getMode() {
 		return mode;
+	}
+	
+	public int getSync(){
+		return sync;
 	}
 }
