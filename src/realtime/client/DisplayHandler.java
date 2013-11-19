@@ -25,6 +25,7 @@ public class DisplayHandler extends Thread {
 
 			case Buffer.MODE_ASYNCH:
 				//Uppdatera guit här
+
 				gui.refreshPanel(image);
 				do {
 					image = buffer.getImage();

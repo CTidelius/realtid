@@ -16,26 +16,26 @@ import javax.swing.JPanel;
 
 public class GUI extends JFrame implements ActionListener{
 	private ArrayList<ImagePanel> panels;
+	private JPanel topPanel;
+	private Buffer buffer;
 
-	public GUI() {
+	public GUI(Buffer buffer) {
+		this.buffer = buffer;
 		setupGUI();
 	}
+	
 	
 	private void setupGUI() {
 		panels = new ArrayList<ImagePanel>();
 		
 		getContentPane().setLayout(new BorderLayout());
 		
-		JPanel topPanel = new JPanel(new FlowLayout());
+		topPanel = new JPanel(new FlowLayout());
 		add(topPanel, BorderLayout.NORTH);
 		
 		JButton button = new JButton("Add camera");
 		button.addActionListener(this);
 		add(button, BorderLayout.SOUTH);
-		
-		ImagePanel panel = new ImagePanel();
-		panels.add(panel);
-		topPanel.add(panel);
 		
 		setPreferredSize(new Dimension(500, 500));
 		setVisible(true);
@@ -43,12 +43,22 @@ public class GUI extends JFrame implements ActionListener{
 		pack();
 	}
 	
+	public void addCamera(){
+		ImagePanel panel = new ImagePanel();
+		panels.add(panel);
+		topPanel.add(panel);
+		buffer.addCamera();
+		new CameraConnection(buffer);
+		pack();
+	}
+	
 	public void refreshPanel(Image image){
-
 		panels.get(image.getIndex()).refresh(image.getImage());
 	}
+	
 	public void actionPerformed(ActionEvent e) {
-		JOptionPane.showMessageDialog(null, "Camera added! (not)");
+		addCamera();
+		JOptionPane.showMessageDialog(null, "Camera added!");
 	}
 		
 	static class ImagePanel extends JPanel {

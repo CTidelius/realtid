@@ -29,8 +29,7 @@ public class ReceiverThread extends Thread {
 					int n = 8 + Axis211A.IMAGE_BUFFER_SIZE;
 					byte[] buf = readBytes(n, is);
 					Image img = new Image(buf, cameraIndex);
-					System.out.println(buf.length);
-//					buffer.putImage(new Img(buf, cameraIndex));
+					buffer.putImage(new Image(buf, cameraIndex));
 					break;
 				}
 

@@ -14,11 +14,10 @@ public class ReceiverThread extends Thread {
 	}
 
 	public void run() {
-		while (!isInterrupted()) {
-			try {
+		try {
+			while (!isInterrupted()) {
 				int msg = is.read();
-				if (msg == -1)
-					return;
+				if(msg == -1) return;
 				switch (msg) {
 				case OpCodes.DISCONNECT:
 					return;
@@ -39,10 +38,9 @@ public class ReceiverThread extends Thread {
 					System.exit(0);
 				}
 				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
