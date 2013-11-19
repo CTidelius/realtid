@@ -51,9 +51,21 @@ public class Monitor {
 			}
 		}
 	}
-
+	
+	//Kallas när sender vill ha bild
 	public synchronized byte[] getLastImage() {
 		return lastImage;
+	}
+	
+	//Kallas av receiver
+	public synchronized void requestMessageSend(int msg) {
+		messagesToSend.offer(msg);
+		notifyAll();
+	}
+	
+	public synchronized void setMovieMode(boolean status) {
+		isIdle = !status;
+		notifyAll();
 	}
 
 	public static void main(String[] args) {
@@ -68,6 +80,7 @@ public class Monitor {
 				sender.start();
 				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
 				recv.run(); //run on main thread
+				sender.interrupt();
 				connection.close();
 			}
 		} catch (IOException e) {
