@@ -7,4 +7,8 @@ public class SenderThread extends Thread {
 	public SenderThread(OutputStream os){
 		this.os = os;
 	}
+	
+	public void run(){
+		
+	}
 }
