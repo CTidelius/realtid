@@ -37,10 +37,8 @@ public class SenderThread extends Thread {
 				}
 				os.flush();
 			} 
-			catch(SocketException ex) { }
 			catch (IOException e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
+				return;
 			}
 		}
 	}
