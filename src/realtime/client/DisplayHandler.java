@@ -1,5 +1,9 @@
 package realtime.client;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class DisplayHandler extends Thread {
 	private Buffer buffer;
 	private GUI gui;
@@ -14,36 +18,30 @@ public class DisplayHandler extends Thread {
 	}
 
 	public void run() {
-		Image image = null;
-		do {
-			image = buffer.getImage();
-		} while (image == null);
-
+		RawImage image = buffer.getImage();
 		while (true) {
 			sync = buffer.getSync();
 			switch (sync) {
-
-			case Buffer.MODE_ASYNCH:
-				//Uppdatera guit här
-
+			case Buffer.MODE_ASYNCH: {
+				// Uppdatera guit här
 				gui.refreshPanel(image);
-				do {
-					image = buffer.getImage();
-				} while (image == null);
-			
-			case Buffer.MODE_SYNCH:
-				//Uppdatera guit här
+				image = buffer.getImage();
+				break;
+			}
+
+			case Buffer.MODE_SYNCH: {
+				// Uppdatera guit här
 				gui.refreshPanel(image);
 				sleepTime = (int) image.timestamp();
-				do {
-					image = buffer.getImage();
-				} while (image == null);
+				image = buffer.getImage();
 				sleepTime = (int) (image.timestamp() - sleepTime);
 				try {
 					Thread.sleep(sleepTime);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				break;
+			}
 			}
 		}
 	}

@@ -33,3 +33,9 @@ GIT-SHIT!
 hÃ¤mta allt senaste
 * git push
 pusha allt till master branch
+
+Testa två kameror:
+1. Starta Monitor.java med port 1337 som argument i serversocket
+2. Ändra portnummer till 1338 och starta Monitor.java igen
+3. Starta RunFromThisClass
+4. Tryck Add Camera två gånger

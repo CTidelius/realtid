@@ -2,7 +2,8 @@ package realtime.client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,72 +12,72 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class GUI extends JFrame implements ActionListener{
-	private ArrayList<ImagePanel> panels;
-	private JPanel topPanel;
+public class GUI extends JFrame implements ActionListener {
 	private Buffer buffer;
+	private CameraDisplay display;
 
 	public GUI(Buffer buffer) {
 		this.buffer = buffer;
 		setupGUI();
 	}
-	
-	
+
 	private void setupGUI() {
-		panels = new ArrayList<ImagePanel>();
-		
 		getContentPane().setLayout(new BorderLayout());
-		
-		topPanel = new JPanel(new FlowLayout());
-		add(topPanel, BorderLayout.NORTH);
-		
+
+		display = new CameraDisplay();
+		add(display, BorderLayout.CENTER);
+
 		JButton button = new JButton("Add camera");
 		button.addActionListener(this);
 		add(button, BorderLayout.SOUTH);
-		
-		setPreferredSize(new Dimension(500, 500));
+
+		setPreferredSize(new Dimension(800, 600));
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 	}
-	
-	public void addCamera(){
-		ImagePanel panel = new ImagePanel();
-		panels.add(panel);
-		topPanel.add(panel);
+
+	public void addCamera() {
 		buffer.addCamera();
 		new CameraConnection(buffer);
 		pack();
 	}
-	
-	public void refreshPanel(Image image){
-		panels.get(image.getIndex()).refresh(image.getImage());
+
+	public void refreshPanel(RawImage image) {
+		display.setImage(image.getImage(), image.getIndex());
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		addCamera();
-		JOptionPane.showMessageDialog(null, "Camera added!");
 	}
-		
-	static class ImagePanel extends JPanel {
-		ImageIcon icon;
 
-		public ImagePanel() {
+	static class CameraDisplay extends JPanel {
+		private int numCameras;
+		private ArrayList<Image> images;
+
+		public CameraDisplay() {
 			super();
-			icon = new ImageIcon();
-			JLabel label = new JLabel(icon);
-			add(label, BorderLayout.CENTER);
-			this.setSize(200, 200);
+			images = new ArrayList<Image>();
 		}
 
-		public void refresh(byte[] data) {
-			java.awt.Image img = getToolkit().createImage(data);
-			getToolkit().prepareImage(img, -1, -1, null);
-			icon.setImage(img);
-			icon.paintIcon(this, this.getGraphics(), 5, 5);
+		@Override
+		public void paint(Graphics g) {
+			super.paint(g);
+			for (int i = 0; i < numCameras; i++)
+				g.drawImage(images.get(i), 340 * i, 0, null);
+		}
+
+		public void setImage(byte[] data, int index) {
+			if (index >= numCameras) {
+				numCameras++;
+				images.add(new ImageIcon(data).getImage());
+				setSize(340 * numCameras, 240); //images are 320x240 but 340x240 makes sure there are some space between
+			} else {
+				images.set(index, new ImageIcon(data).getImage());
+			}
+			repaint();
 		}
 	}
 }

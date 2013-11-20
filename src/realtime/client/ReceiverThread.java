@@ -19,7 +19,6 @@ public class ReceiverThread extends Thread {
 	}
 
 	public void run() {
-		byte[] b = new byte[8];
 		try {
 			while (true) {
 				int msg = is.read();
@@ -28,8 +27,8 @@ public class ReceiverThread extends Thread {
 				case OpCodes.PUT_IMAGE:
 					int n = 8 + Axis211A.IMAGE_BUFFER_SIZE;
 					byte[] buf = readBytes(n, is);
-					Image img = new Image(buf, cameraIndex);
-					buffer.putImage(new Image(buf, cameraIndex));
+					RawImage img = new RawImage(buf, cameraIndex);
+					buffer.putImage(img);
 					break;
 				}
 

@@ -24,5 +24,6 @@ public class ImageRetriever extends Thread {
 			if(motionDetector.detect())
 				monitor.onMotionDetected();
 		}
+		camera.close();
 	}
 }

@@ -20,7 +20,7 @@ public class CameraConnection {
 	public CameraConnection(Buffer buffer) {
 		this.buffer = buffer;
 		try {
-			socket = new Socket(server, port);
+			socket = new Socket(server, port + CAMERA_INDEX);
 			senderThread = new SenderThread(socket.getOutputStream());
 			(receiverThread = new ReceiverThread(socket.getInputStream(), buffer, CAMERA_INDEX)).start();
 			CAMERA_INDEX++;

@@ -41,6 +41,7 @@ public class ReceiverThread extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
 	}
 }
