@@ -25,7 +25,6 @@ public class RawImage {
 	// Create timestamp out of data array
 	private long createTimestamp(byte[] data) {
 		ByteBuffer bb = ByteBuffer.wrap(data, 0, 8);
-		//bb.flip();
 		return bb.getLong();
 	}
 
