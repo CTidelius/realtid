@@ -11,10 +11,8 @@ public class RawImage {
 	private int camIndex;
 
 	/**
-	 * Create an image and a timestamp out of a byte array (size of 1 + 8 +
+	 * Create an image and a timestamp out of a byte array (size of 8 +
 	 * Axis211A.IMAGE_BUFFER_SIZE)
-	 * 
-	 * @param data
 	 */
 	public RawImage(byte[] data, int camIndex) {
 		timestamp = createTimestamp(data);
