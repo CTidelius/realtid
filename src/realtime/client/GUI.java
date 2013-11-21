@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame {
 	private Buffer buffer;
 	private CameraDisplay display;
 
@@ -28,8 +28,7 @@ public class GUI extends JFrame implements ActionListener {
 		display = new CameraDisplay();
 		add(display, BorderLayout.CENTER);
 
-		JButton button = new JButton("Add camera");
-		button.addActionListener(this);
+		JButton button = new NewCameraButton("Add camera");
 		add(button, BorderLayout.SOUTH);
 
 		setPreferredSize(new Dimension(800, 600));
@@ -48,8 +47,41 @@ public class GUI extends JFrame implements ActionListener {
 		display.setImage(image.getImage(), image.getIndex());
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		addCamera();
+	private class SetModeButton extends JButton implements ActionListener {
+
+		private SetModeButton(String name) {
+			super(name);
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO: set move/idle
+		}
+	}
+
+	private class SetSynchButton extends JButton implements ActionListener {
+
+		private SetSynchButton(String name) {
+			super(name);
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO: set synch on/off
+		}
+	}
+
+	private class NewCameraButton extends JButton implements ActionListener {
+
+		private NewCameraButton(String name) {
+			super(name);
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			addCamera();
+		}
+
 	}
 
 	static class CameraDisplay extends JPanel {
@@ -64,7 +96,7 @@ public class GUI extends JFrame implements ActionListener {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			for (int i = 0; i < numCameras; i++)
+			for (int i = 0; i < images.size(); i++)
 				g.drawImage(images.get(i), 340 * i, 0, null);
 		}
 
@@ -72,7 +104,9 @@ public class GUI extends JFrame implements ActionListener {
 			if (index >= numCameras) {
 				numCameras++;
 				images.add(new ImageIcon(data).getImage());
-				setSize(340 * numCameras, 240); //images are 320x240 but 340x240 makes sure there are some space between
+				setSize(340 * numCameras, 240); // images are 320x240 but
+												// 340x240 makes sure there are
+												// some space between
 			} else {
 				images.set(index, new ImageIcon(data).getImage());
 			}
