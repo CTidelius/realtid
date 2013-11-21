@@ -24,7 +24,6 @@ public class ReceiverThread extends Thread {
 		try {
 			while (true) {
 				int msg = is.read();
-
 				switch (msg) {
 				case OpCodes.PUT_IMAGE:
 					int n = 8 + Axis211A.IMAGE_BUFFER_SIZE;
