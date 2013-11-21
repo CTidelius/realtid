@@ -1,8 +1,5 @@
 package realtime.client;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class DisplayHandler extends Thread {
 	private Buffer buffer;

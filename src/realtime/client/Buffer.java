@@ -2,7 +2,6 @@ package realtime.client;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Buffer {
 
