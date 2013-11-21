@@ -64,7 +64,7 @@ public class GUI extends JFrame implements ActionListener {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			for (int i = 0; i < numCameras; i++)
+			for (int i = 0; i < images.size(); i++)
 				g.drawImage(images.get(i), 340 * i, 0, null);
 		}
 
