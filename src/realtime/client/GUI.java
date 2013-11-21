@@ -31,9 +31,9 @@ public class GUI extends JFrame {
 
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
 		JButton camButton = new AddCameraButton("Add camera");
-		buttonPanel.add(camButton, BorderLayout.SOUTH);
+		buttonPanel.add(camButton);
 		JButton modeButton = new SetModeButton("Set mode movie/idle");
-		buttonPanel.add(modeButton, BorderLayout.SOUTH);
+		buttonPanel.add(modeButton);
 		JButton synchButton = new SetSynchButton("Set synch on/off");
 		buttonPanel.add(synchButton);
 		add(buttonPanel, BorderLayout.SOUTH);
