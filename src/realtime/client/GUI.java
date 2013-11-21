@@ -3,6 +3,7 @@ package realtime.client;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,8 +29,14 @@ public class GUI extends JFrame {
 		display = new CameraDisplay();
 		add(display, BorderLayout.CENTER);
 
-		JButton button = new NewCameraButton("Add camera");
-		add(button, BorderLayout.SOUTH);
+		JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
+		JButton camButton = new AddCameraButton("Add camera");
+		buttonPanel.add(camButton, BorderLayout.SOUTH);
+		JButton modeButton = new SetModeButton("Set mode movie/idle");
+		buttonPanel.add(modeButton, BorderLayout.SOUTH);
+		JButton synchButton = new SetSynchButton("Set synch on/off");
+		buttonPanel.add(synchButton);
+		add(buttonPanel, BorderLayout.SOUTH);
 
 		setPreferredSize(new Dimension(800, 600));
 		setVisible(true);
@@ -55,7 +62,7 @@ public class GUI extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			// TODO: set move/idle
+			// TODO: set movie/idle
 		}
 	}
 
@@ -71,9 +78,9 @@ public class GUI extends JFrame {
 		}
 	}
 
-	private class NewCameraButton extends JButton implements ActionListener {
+	private class AddCameraButton extends JButton implements ActionListener {
 
-		private NewCameraButton(String name) {
+		private AddCameraButton(String name) {
 			super(name);
 			addActionListener(this);
 		}
