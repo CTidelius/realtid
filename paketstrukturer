@@ -1,5 +1,5 @@
 PUT_IMAGE:
-opcode 1 byte, timestamp 8 bytes, imagedata IMAGE_BUFFER_SIZE bytes
+opcode 1 byte, timestamp 8 bytes, size 4 bytes, imagedata IMAGE_BUFFER_SIZE bytes
 
 PUT_TIME:
 opcode 1 byte, timestamp 8 bytes

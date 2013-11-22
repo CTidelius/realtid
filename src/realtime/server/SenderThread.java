@@ -2,7 +2,6 @@ package realtime.server;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
 
 public class SenderThread extends Thread {

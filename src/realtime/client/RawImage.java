@@ -2,8 +2,6 @@ package realtime.client;
 
 import java.nio.ByteBuffer;
 
-import se.lth.cs.cameraproxy.Axis211A;
-
 public class RawImage {
 
 	private byte[] image;
@@ -28,8 +26,9 @@ public class RawImage {
 
 	// Create image array out of data array
 	private byte[] createImage(byte[] data) {
-		byte[] tempImage = new byte[Axis211A.IMAGE_BUFFER_SIZE];
-		System.arraycopy(data, 8, tempImage, 0, tempImage.length);
+		int lengthOfImage = ByteBuffer.wrap(data, 8, 4).getInt();
+		byte[] tempImage = new byte[lengthOfImage];
+		System.arraycopy(data, 12, tempImage, 0, lengthOfImage);
 		return tempImage;
 	}
 
