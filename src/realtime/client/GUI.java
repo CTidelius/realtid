@@ -51,7 +51,7 @@ public class GUI extends JFrame {
 	}
 
 	public void refreshPanel(RawImage image) {
-		display.setImage(image.getImage(), image.getIndex());
+		display.setImage(image);
 	}
 
 	private class SetModeButton extends JButton implements ActionListener {
@@ -94,28 +94,34 @@ public class GUI extends JFrame {
 	static class CameraDisplay extends JPanel {
 		private int numCameras;
 		private ArrayList<Image> images;
+		private ArrayList<Long> delays;
 
 		public CameraDisplay() {
 			super();
 			images = new ArrayList<Image>();
+			delays = new ArrayList<Long>();
 		}
 
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			for (int i = 0; i < images.size(); i++)
+			for (int i = 0; i < images.size(); i++) {
 				g.drawImage(images.get(i), 340 * i, 0, null);
+				g.drawString(delays.get(i).toString(), 340 * i + 160, 250);
+			}
 		}
 
-		public void setImage(byte[] data, int index) {
+		public void setImage(RawImage rawImage) {
+			int index = rawImage.getIndex();
+			byte[] data = rawImage.getImage();
 			if (index >= numCameras) {
 				numCameras++;
 				images.add(new ImageIcon(data).getImage());
-				setSize(340 * numCameras, 240); // images are 320x240 but
-												// 340x240 makes sure there are
-												// some space between
+				delays.add(rawImage.getDelay());
+				setSize(340 * numCameras, 260);
 			} else {
 				images.set(index, new ImageIcon(data).getImage());
+				delays.set(index, rawImage.getDelay());
 			}
 			repaint();
 		}

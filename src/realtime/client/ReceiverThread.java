@@ -2,21 +2,19 @@ package realtime.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import realtime.server.OpCodes;
 import se.lth.cs.cameraproxy.Axis211A;
 
 public class ReceiverThread extends Thread {
-
 	private InputStream is;
-	private Buffer buffer;
-	private int cameraIndex;
+	private CameraConnection conn;
 	private byte[] readBuffer;
 
-	public ReceiverThread(InputStream is, Buffer buffer, int cameraIndex) {
+	public ReceiverThread(InputStream is, CameraConnection conn) {
 		this.is = is;
-		this.buffer = buffer;
-		this.cameraIndex = cameraIndex;
+		this.conn = conn;
 		this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
 	}
 
@@ -25,12 +23,18 @@ public class ReceiverThread extends Thread {
 			while (true) {
 				int msg = is.read();
 				switch (msg) {
-				case OpCodes.PUT_IMAGE:
+				case OpCodes.PUT_IMAGE: {
 					int n = 12 + Axis211A.IMAGE_BUFFER_SIZE;
 					readBytes(n, is, readBuffer);
-					RawImage img = new RawImage(readBuffer, cameraIndex);
-					buffer.putImage(img);
+					conn.putImage(readBuffer);
 					break;
+				}
+				case OpCodes.PUT_TIME: {
+					byte[] tbuf = new byte[8];
+					readBytes(8, is, tbuf);
+					conn.putTime(ByteBuffer.wrap(tbuf).getLong());
+					break;
+				}
 				}
 
 			}

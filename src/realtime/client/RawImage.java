@@ -3,17 +3,18 @@ package realtime.client;
 import java.nio.ByteBuffer;
 
 public class RawImage {
-
 	private byte[] image;
 	private long timestamp;
 	private int camIndex;
+	private long delay;
 
 	/**
 	 * Create an image and a timestamp out of a byte array (size of 8 +
 	 * Axis211A.IMAGE_BUFFER_SIZE)
 	 */
-	public RawImage(byte[] data, int camIndex) {
-		timestamp = createTimestamp(data);
+	public RawImage(byte[] data, int camIndex, long timeDiff) {
+		timestamp = createTimestamp(data) + timeDiff;
+		this.delay = System.currentTimeMillis() - timestamp;
 		image = createImage(data);
 		this.camIndex = camIndex;
 	}
@@ -42,5 +43,9 @@ public class RawImage {
 
 	public long timestamp() {
 		return timestamp;
+	}
+	
+	public long getDelay() {
+		return delay;
 	}
 }

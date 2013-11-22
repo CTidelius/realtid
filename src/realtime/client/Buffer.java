@@ -18,6 +18,7 @@ public class Buffer {
 
 	public Buffer() {
 		images = new ArrayList<ArrayDeque<RawImage>>();
+		sync = MODE_SYNCH;
 	}
 
 	public synchronized void addCamera() {
@@ -37,8 +38,9 @@ public class Buffer {
 	public synchronized int getSync() {
 		return sync;
 	}
-
-	public synchronized RawImage getImage() {
+	
+	//get any image
+	public synchronized RawImage getAnyImage() {
 		
 		while(true) {
 			int imageToPull = 0;
@@ -60,6 +62,7 @@ public class Buffer {
 		}
 	}
 	
+	//wait until any image is available
 	private synchronized void waitForImageAvailable() {
 		while(true) {
 			boolean hasImage = false;
@@ -70,5 +73,40 @@ public class Buffer {
 				break;
 			try { wait(); } catch (InterruptedException e) { e.printStackTrace(); }
 		}
+	}
+	
+	//get one image from each camera
+	public synchronized ArrayList<RawImage> getImagesSync() {
+		ArrayList<RawImage> list = new ArrayList<RawImage>();
+		waitForImagesAvailable();
+		for(ArrayDeque<RawImage> buffer : images) 
+			list.add(buffer.poll());
+		return list;
+	}
+	
+	//wait until all cameras have available images
+	private synchronized void waitForImagesAvailable() {
+		while(true) {
+			boolean hasImages = true;
+			for(ArrayDeque<RawImage> q : images) 
+				if(q.isEmpty())
+					hasImages = false;
+			if(hasImages)
+				break;
+			try { wait(); } catch (InterruptedException e) { e.printStackTrace(); }
+		}
+	}
+	
+	//get image from specific camera
+	public synchronized RawImage getImage(int index, long timeout) {
+		long maxTime = System.currentTimeMillis() + timeout;
+		while(images.get(index).isEmpty() && System.currentTimeMillis() < maxTime) {
+			try {
+				wait(maxTime - System.currentTimeMillis());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return images.get(index).poll();
 	}
 }

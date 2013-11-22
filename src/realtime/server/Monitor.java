@@ -11,7 +11,6 @@ public class Monitor {
 	private byte[] lastImage;
 	private long lastImageSent;
 	private Queue<Integer> messagesToSend;
-
 	private ImageRetriever imageRetriever;
 
 	public Monitor() {
@@ -78,7 +77,7 @@ public class Monitor {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
 				
-				SenderThread sender = new SenderThread(m, connection.getOutputStream());
+				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0); //change artificial delay here
 				sender.start();
 				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
 				recv.run(); //run on main thread

@@ -7,10 +7,13 @@ import java.nio.ByteBuffer;
 public class SenderThread extends Thread {
 	private Monitor monitor;
 	private OutputStream os;
+	private boolean hasSentTime;
+	private long delay;
 
-	public SenderThread(Monitor monitor, OutputStream os) {
+	public SenderThread(Monitor monitor, OutputStream os, long delay) {
 		this.monitor = monitor;
 		this.os = os;
+		this.delay = delay;
 	}
 
 	public void run() {
@@ -19,9 +22,11 @@ public class SenderThread extends Thread {
 				int msg = monitor.getMessage();
 				switch (msg) {
 				case OpCodes.PUT_IMAGE: {
-					os.write(msg);
-					os.write(ByteBuffer.allocate(8).putLong(System.currentTimeMillis()).array());
-					os.write(monitor.getLastImage());
+					if (hasSentTime) {
+						os.write(msg);
+						os.write(ByteBuffer.allocate(8).putLong(System.currentTimeMillis() - delay).array());
+						os.write(monitor.getLastImage());
+					}
 					break;
 				}
 				case OpCodes.SET_MOVIE: {
@@ -31,15 +36,15 @@ public class SenderThread extends Thread {
 				case OpCodes.PUT_TIME: {
 					os.write(msg);
 					os.write(ByteBuffer.allocate(8).putLong(System.currentTimeMillis()).array());
+					hasSentTime = true;
 					break;
 				}
 				}
 				os.flush();
-			} 
-			catch (IOException e) {
+			} catch (IOException e) {
 				return;
 			}
 		}
 	}
-	
+
 }
