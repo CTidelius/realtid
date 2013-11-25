@@ -1,6 +1,7 @@
 package realtime.client;
 
 import java.awt.BorderLayout;
+import realtime.server.OpCodes;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -151,13 +152,13 @@ public class GUI extends JFrame {
 
 			switch (choice) {
 			case AUTO:
-				buffer.setMode(Buffer.MODE_AUTO);
+//				buffer.setMode(realtime.server.OpCodes.set);
 				break;
 			case IDLE:
-				buffer.setMode(Buffer.MODE_IDLE);
+				buffer.setMode(OpCodes.SET_IDLE);
 				break;
 			case MOVIE:
-				buffer.setMode(Buffer.MODE_MOVIE);
+				buffer.setMode(OpCodes.SET_MOVIE);
 				break;
 			}
 		}
@@ -179,7 +180,7 @@ public class GUI extends JFrame {
 
 			switch (choice) {
 			case AUTO:
-				buffer.setSynch(Buffer.MODE_AUTO);
+//				buffer.setSynch(Buffer.MODE_AUTO);
 				break;
 			case ON:
 				buffer.setSynch(Buffer.MODE_SYNCH);

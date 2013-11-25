@@ -52,10 +52,9 @@ public class Buffer {
 		broadcastMessage(mode);
 	}
 
-	public synchronized void setSynch(int mode) {
-		if(this.sync == mode) return;
-		this.sync = mode;
-		broadcastMessage(mode);
+	public synchronized void setSynch(int sync) {
+		if(this.sync == sync) return;
+		this.sync = sync;
 	}
 
 	private void broadcastMessage(int message) {

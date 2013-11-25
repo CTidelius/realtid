@@ -70,13 +70,13 @@ public class Monitor {
 		ServerSocket socket = null;
 
 		try {
-			socket = new ServerSocket(1337);
+			socket = new ServerSocket(1338);
 			System.out.println("Server running");
 			while (true) {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
 
-				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0); // change
+				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 1754); // change
 																							// artificial
 																							// delay
 																							// here
