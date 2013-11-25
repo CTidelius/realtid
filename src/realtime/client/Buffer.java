@@ -12,7 +12,7 @@ public class Buffer {
 
 	private int mode;
 	private int sync;
-	
+
 	private ArrayList<CameraConnection> connections;
 	private ArrayList<ArrayDeque<RawImage>> images;
 
@@ -22,6 +22,8 @@ public class Buffer {
 	}
 
 	public synchronized void addCamera() {
+		CameraConnection connection = new CameraConnection(this);
+		connections.add(connection);
 		images.add(new ArrayDeque<RawImage>());
 		notifyAll();
 	}
@@ -38,79 +40,85 @@ public class Buffer {
 	public synchronized int getSync() {
 		return sync;
 	}
-	
-	public void addConnection(CameraConnection connection){
-		connections.add(connection);
-	}
-	
-	public void broadcastMessage(){
-		for(CameraConnection connection : connections){
-			//connection.putMessage()
+
+
+	public synchronized void broadcastMessage(int message) {
+		for (CameraConnection connection : connections) {
+			connection.requestMessage(message);
 		}
 	}
-	
-	//get any image
+
+	// get any image
 	public synchronized RawImage getAnyImage() {
-		
-		while(true) {
+
+		while (true) {
 			int imageToPull = 0;
-			while(images.isEmpty()) //no cameras
-				try { wait(); } catch (InterruptedException e) { e.printStackTrace(); }
-			waitForImageAvailable(); //make sure there is an image
-			while(images.get(imageToPull).isEmpty()) //might not be an image in camera 0
+			while (images.isEmpty())
+				// no cameras
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			waitForImageAvailable(); // make sure there is an image
+			while (images.get(imageToPull).isEmpty())
+				// might not be an image in camera 0
 				imageToPull++;
-			
+
 			for (int i = imageToPull + 1; i < images.size(); i++) {
 				if(images.get(i).peek() == null) continue;
-					if(images.get(imageToPull).peek().timestamp() < 
-							images.get(i).peek().timestamp()) {
-				imageToPull = i;
+				if(images.get(imageToPull).peek().timestamp() < images.get(i).peek().timestamp()) {
+					imageToPull = i;
 				}
 			}
-			RawImage image =  images.get(imageToPull).poll();
+			RawImage image = images.get(imageToPull).poll();
 			return image;
 		}
 	}
-	
-	//wait until any image is available
+
+	// wait until any image is available
 	private synchronized void waitForImageAvailable() {
-		while(true) {
+		while (true) {
 			boolean hasImage = false;
-			for(ArrayDeque<RawImage> q : images) 
-				if(q.isEmpty() == false)
-					hasImage = true;
-			if(hasImage)
-				break;
-			try { wait(); } catch (InterruptedException e) { e.printStackTrace(); }
+			for (ArrayDeque<RawImage> q : images)
+				if(q.isEmpty() == false) hasImage = true;
+			if(hasImage) break;
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
-	//get one image from each camera
+
+	// get one image from each camera
 	public synchronized ArrayList<RawImage> getImagesSync() {
 		ArrayList<RawImage> list = new ArrayList<RawImage>();
 		waitForImagesAvailable();
-		for(ArrayDeque<RawImage> buffer : images) 
+		for (ArrayDeque<RawImage> buffer : images)
 			list.add(buffer.poll());
 		return list;
 	}
-	
-	//wait until all cameras have available images
+
+	// wait until all cameras have available images
 	private synchronized void waitForImagesAvailable() {
-		while(true) {
+		while (true) {
 			boolean hasImages = true;
-			for(ArrayDeque<RawImage> q : images) 
-				if(q.isEmpty())
-					hasImages = false;
-			if(hasImages)
-				break;
-			try { wait(); } catch (InterruptedException e) { e.printStackTrace(); }
+			for (ArrayDeque<RawImage> q : images)
+				if(q.isEmpty()) hasImages = false;
+			if(hasImages) break;
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
-	//get image from specific camera
+
+	// get image from specific camera
 	public synchronized RawImage getImage(int index, long timeout) {
 		long maxTime = System.currentTimeMillis() + timeout;
-		while(images.get(index).isEmpty() && System.currentTimeMillis() < maxTime) {
+		while (images.get(index).isEmpty() && System.currentTimeMillis() < maxTime) {
 			try {
 				wait(maxTime - System.currentTimeMillis());
 			} catch (InterruptedException e) {

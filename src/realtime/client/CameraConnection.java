@@ -22,7 +22,6 @@ public class CameraConnection {
 
 	public CameraConnection(Buffer buffer) {
 		this.buffer = buffer;
-		buffer.addConnection(this);
 		messagesToSend = new ArrayDeque<Integer>();
 		try {
 			this.index = CAMERA_INDEX;

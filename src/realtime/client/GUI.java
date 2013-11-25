@@ -46,7 +46,6 @@ public class GUI extends JFrame {
 
 	public void addCamera() {
 		buffer.addCamera();
-		new CameraConnection(buffer);
 		pack();
 	}
 
