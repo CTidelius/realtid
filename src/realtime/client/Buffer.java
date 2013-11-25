@@ -13,7 +13,7 @@ public class Buffer {
 	private int mode;
 	private int sync;
 	
-
+	private ArrayList<CameraConnection> connections;
 	private ArrayList<ArrayDeque<RawImage>> images;
 
 	public Buffer() {
@@ -37,6 +37,16 @@ public class Buffer {
 
 	public synchronized int getSync() {
 		return sync;
+	}
+	
+	public void addConnection(CameraConnection connection){
+		connections.add(connection);
+	}
+	
+	public void broadcastMessage(){
+		for(CameraConnection connection : connections){
+			//connection.putMessage()
+		}
 	}
 	
 	//get any image

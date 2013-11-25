@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayDeque;
 import realtime.server.*;
+
 public class CameraConnection {
 	private Socket socket;
 	private SenderThread senderThread;
@@ -16,20 +17,20 @@ public class CameraConnection {
 
 	private final String server = "127.0.0.1";
 	private final int port = 1337;
-	
+
 	private static int CAMERA_INDEX = 0;
 
 	public CameraConnection(Buffer buffer) {
 		this.buffer = buffer;
+		buffer.addConnection(this);
 		messagesToSend = new ArrayDeque<Integer>();
 		try {
 			this.index = CAMERA_INDEX;
 			CAMERA_INDEX++;
 			socket = new Socket(server, port + index);
-			senderThread = new SenderThread(socket.getOutputStream(), this);
-			senderThread.start();
+			(senderThread = new SenderThread(socket.getOutputStream(), this)).start();
 			(receiverThread = new ReceiverThread(socket.getInputStream(), this)).start();
-			
+
 			timeDifference = System.currentTimeMillis();
 			requestMessage(OpCodes.GET_TIME);
 		} catch (UnknownHostException e) {
@@ -38,27 +39,30 @@ public class CameraConnection {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public synchronized int getIndex() {
 		return this.index;
 	}
-	
+
 	public synchronized void requestMessage(int msg) {
 		messagesToSend.offer(msg);
 		notifyAll();
 	}
-	
+
 	public synchronized int getMessage() {
-		while(messagesToSend.isEmpty())
-			try { wait(); } catch(InterruptedException e) { }
+		while (messagesToSend.isEmpty())
+			try {
+				wait();
+			} catch (InterruptedException e) {
+			}
 		return messagesToSend.poll();
 	}
-	
+
 	public synchronized void putTime(long time) {
 		long delay = (System.currentTimeMillis() - timeDifference) / 2;
 		timeDifference = (timeDifference + delay - time);
 	}
-	
+
 	public synchronized void putImage(byte[] data) {
 		RawImage rawImage = new RawImage(data, index, timeDifference);
 		buffer.putImage(rawImage);
