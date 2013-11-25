@@ -7,8 +7,11 @@ public class Buffer {
 
 	public static final int MODE_IDLE = 0;
 	public static final int MODE_MOVIE = 1;
+
 	public static final int MODE_ASYNCH = 0;
 	public static final int MODE_SYNCH = 1;
+
+	public static final int MODE_AUTO = 2;
 
 	private int mode;
 	private int sync;
@@ -18,7 +21,9 @@ public class Buffer {
 
 	public Buffer() {
 		images = new ArrayList<ArrayDeque<RawImage>>();
+		connections = new ArrayList<CameraConnection>();
 		sync = MODE_SYNCH;
+		mode = MODE_AUTO;
 	}
 
 	public synchronized void addCamera() {
@@ -41,13 +46,15 @@ public class Buffer {
 		return sync;
 	}
 
-	public synchronized void toggleMode() {
-		mode = mode == MODE_IDLE ? MODE_MOVIE : MODE_IDLE;
+	public synchronized void setMode(int mode) {
+		if(this.mode == mode) return;
+		this.mode = mode;
 		broadcastMessage(mode);
 	}
 
-	public synchronized void toggleSynch() {
-		sync = sync == MODE_ASYNCH ? MODE_SYNCH : MODE_ASYNCH;
+	public synchronized void setSynch(int mode) {
+		if(this.sync == mode) return;
+		this.sync = mode;
 		broadcastMessage(mode);
 	}
 
