@@ -8,8 +8,6 @@ import realtime.server.*;
 
 public class CameraConnection {
 	private Socket socket;
-	private SenderThread senderThread;
-	private ReceiverThread receiverThread;
 	private long timeDifference;
 	private Buffer buffer;
 	private int index;
@@ -27,8 +25,8 @@ public class CameraConnection {
 			this.index = CAMERA_INDEX;
 			CAMERA_INDEX++;
 			socket = new Socket(server, port + index);
-			(senderThread = new SenderThread(socket.getOutputStream(), this)).start();
-			(receiverThread = new ReceiverThread(socket.getInputStream(), this)).start();
+			new SenderThread(socket.getOutputStream(), this).start();
+			new ReceiverThread(socket.getInputStream(), this).start();
 
 			timeDifference = System.currentTimeMillis();
 			requestMessage(OpCodes.GET_TIME);

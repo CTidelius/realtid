@@ -1,7 +1,6 @@
 package realtime.server;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayDeque;
 
 import se.lth.cs.fakecamera.Axis211A;
 import se.lth.cs.fakecamera.MotionDetector;

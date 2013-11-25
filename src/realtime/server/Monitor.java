@@ -26,8 +26,7 @@ public class Monitor {
 
 	// Kallas när imageretriever upptäcker rörelse
 	public synchronized void onMotionDetected() {
-		if (!isIdle)
-			return;
+		if(!isIdle) return;
 		isIdle = false;
 		messagesToSend.offer(OpCodes.SET_MOVIE);
 		notifyAll();
@@ -36,11 +35,10 @@ public class Monitor {
 	// Kallas när sender vill ha något att skicka
 	public synchronized int getMessage() {
 		while (true) {
-			if (messagesToSend.isEmpty() == false)
-				return messagesToSend.poll();
+			if(messagesToSend.isEmpty() == false) return messagesToSend.poll();
 			long nextSend = lastImageSent + (isIdle ? 5000 : 40);
 			long curTime = System.currentTimeMillis();
-			if (curTime >= nextSend) {
+			if(curTime >= nextSend) {
 				lastImageSent = curTime;
 				return OpCodes.PUT_IMAGE;
 			}
@@ -50,18 +48,18 @@ public class Monitor {
 			}
 		}
 	}
-	
-	//Kallas när sender vill ha bild
+
+	// Kallas när sender vill ha bild
 	public synchronized byte[] getLastImage() {
 		return lastImage;
 	}
-	
-	//Kallas av receiver
+
+	// Kallas av receiver
 	public synchronized void requestMessageSend(int msg) {
 		messagesToSend.offer(msg);
 		notifyAll();
 	}
-	
+
 	public synchronized void setMovieMode(boolean status) {
 		isIdle = !status;
 		notifyAll();
@@ -69,26 +67,34 @@ public class Monitor {
 
 	public static void main(String[] args) {
 		Monitor m = new Monitor();
+		ServerSocket socket = null;
 
 		try {
-			ServerSocket socket = new ServerSocket(1337);
+			socket = new ServerSocket(1337);
 			System.out.println("Server running");
 			while (true) {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
-				
-				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0); //change artificial delay here
+
+				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0); // change
+																							// artificial
+																							// delay
+																							// here
 				sender.start();
 				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
-				recv.run(); //run on main thread
+				recv.run(); // run on main thread
 				sender.interrupt();
 				connection.close();
 				System.out.println("Server closed");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			
 			e.printStackTrace();
+		} finally {
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
