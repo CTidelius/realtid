@@ -41,8 +41,17 @@ public class Buffer {
 		return sync;
 	}
 
+	public synchronized void toggleMode() {
+		mode = mode == MODE_IDLE ? MODE_MOVIE : MODE_IDLE;
+		broadcastMessage(mode);
+	}
 
-	public synchronized void broadcastMessage(int message) {
+	public synchronized void toggleSynch() {
+		sync = sync == MODE_ASYNCH ? MODE_SYNCH : MODE_ASYNCH;
+		broadcastMessage(mode);
+	}
+
+	private void broadcastMessage(int message) {
 		for (CameraConnection connection : connections) {
 			connection.requestMessage(message);
 		}

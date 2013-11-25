@@ -30,11 +30,14 @@ public class GUI extends JFrame {
 		add(display, BorderLayout.CENTER);
 
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
-		JButton camButton = new AddCameraButton("Add camera");
+		JButton camButton = new JButton("Add camera");
+		camButton.addActionListener(new AddCameraListener());
 		buttonPanel.add(camButton);
-		JButton modeButton = new SetModeButton("Set mode movie/idle");
+		JButton modeButton = new JButton("Set mode movie/idle");
+		modeButton.addActionListener(new SetModeListener());
 		buttonPanel.add(modeButton);
-		JButton synchButton = new SetSynchButton("Set synch on/off");
+		JButton synchButton = new JButton("Set synch on/off");
+		synchButton.addActionListener(new SetSynchListener());
 		buttonPanel.add(synchButton);
 		add(buttonPanel, BorderLayout.SOUTH);
 
@@ -53,41 +56,25 @@ public class GUI extends JFrame {
 		display.setImage(image);
 	}
 
-	private class SetModeButton extends JButton implements ActionListener {
-
-		private SetModeButton(String name) {
-			super(name);
-			addActionListener(this);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			// TODO: set movie/idle
-		}
-	}
-
-	private class SetSynchButton extends JButton implements ActionListener {
-
-		private SetSynchButton(String name) {
-			super(name);
-			addActionListener(this);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			// TODO: set synch on/off
-		}
-	}
-
-	private class AddCameraButton extends JButton implements ActionListener {
-
-		private AddCameraButton(String name) {
-			super(name);
-			addActionListener(this);
-		}
+	private class AddCameraListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			addCamera();
 		}
 
+	}
+
+	private class SetModeListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			buffer.toggleMode();
+		}
+	}
+
+	private class SetSynchListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			buffer.toggleSynch();
+		}
 	}
 
 	static class CameraDisplay extends JPanel {
@@ -113,7 +100,7 @@ public class GUI extends JFrame {
 		public void setImage(RawImage rawImage) {
 			int index = rawImage.getIndex();
 			byte[] data = rawImage.getImage();
-			if (index >= numCameras) {
+			if(index >= numCameras) {
 				numCameras++;
 				images.add(new ImageIcon(data).getImage());
 				delays.add(rawImage.getDelay());
