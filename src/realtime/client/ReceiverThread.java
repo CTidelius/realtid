@@ -35,6 +35,10 @@ public class ReceiverThread extends Thread {
 					conn.putTime(ByteBuffer.wrap(tbuf).getLong());
 					break;
 				}
+				case OpCodes.SET_MOVIE: {
+					conn.setMovie();
+					break;
+				}
 				}
 
 			}

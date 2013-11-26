@@ -33,6 +33,14 @@ public class ReceiverThread extends Thread {
 					m.setMovieMode(true);
 					break;
 				}
+				case OpCodes.SET_AUTO_ON: {
+					m.setAuto(true);
+					break;
+				}
+				case OpCodes.SET_AUTO_OFF: {
+					m.setAuto(false);
+					break;
+				}
 				default: {
 					System.out.println("Unrecognized msg " + msg);
 					System.exit(0);

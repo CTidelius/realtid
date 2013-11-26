@@ -8,6 +8,7 @@ import java.util.Queue;
 
 public class Monitor {
 	private boolean isIdle = true;
+	private boolean isAuto = true;
 	private byte[] lastImage;
 	private long lastImageSent;
 	private Queue<Integer> messagesToSend;
@@ -26,7 +27,7 @@ public class Monitor {
 
 	// Kallas när imageretriever upptäcker rörelse
 	public synchronized void onMotionDetected() {
-		if(!isIdle) return;
+		if(!isIdle || !isAuto) return;
 		isIdle = false;
 		messagesToSend.offer(OpCodes.SET_MOVIE);
 		notifyAll();
@@ -64,19 +65,23 @@ public class Monitor {
 		isIdle = !status;
 		notifyAll();
 	}
+	
+	public synchronized void setAuto(boolean status) {
+		this.isAuto = status;
+	}
 
 	public static void main(String[] args) {
 		Monitor m = new Monitor();
 		ServerSocket socket = null;
 
 		try {
-			socket = new ServerSocket(1338);
+			socket = new ServerSocket(1337);
 			System.out.println("Server running");
 			while (true) {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
 
-				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 1754); // change
+				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0); // change
 																							// artificial
 																							// delay
 																							// here

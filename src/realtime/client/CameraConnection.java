@@ -42,8 +42,8 @@ public class CameraConnection {
 	}
 
 	public synchronized void requestMessage(int msg) {
-		messagesToSend.offer(msg);
-		notifyAll();
+			messagesToSend.offer(msg);
+			notifyAll();
 	}
 
 	public synchronized int getMessage() {
@@ -63,5 +63,9 @@ public class CameraConnection {
 	public synchronized void putImage(byte[] data) {
 		RawImage rawImage = new RawImage(data, index, timeDifference);
 		buffer.putImage(rawImage);
+	}
+	
+	public void setMovie() {
+		buffer.setMode(Buffer.MODE_MOVIE);
 	}
 }

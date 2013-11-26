@@ -1,7 +1,6 @@
 package realtime.client;
 
 import java.awt.BorderLayout;
-import realtime.server.OpCodes;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +11,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -22,14 +23,16 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame {
+public class GUI extends JFrame implements Observer {
 	private Buffer buffer;
 	private CameraDisplay display;
+	private JLabel labelSync, labelMode;
 
 	JPanel buttonPanel = new JPanel(new GridBagLayout());
 
 	public GUI(Buffer buffer) {
 		this.buffer = buffer;
+		buffer.addObserver(this);
 		setupGUI();
 	}
 
@@ -55,7 +58,7 @@ public class GUI extends JFrame {
 		camButton.addActionListener(new AddCameraListener());
 		addToPanel(camButton, 0, 0, 4);
 
-		JLabel labelMode = new JLabel("Mode");
+		labelMode = new JLabel("Mode (Idle)");
 		addToPanel(labelMode, 1, 0);
 
 		JRadioButton modeAuto = new JRadioButton("Auto");
@@ -77,15 +80,15 @@ public class GUI extends JFrame {
 		modeGroup.add(modeMovie);
 		new SetModeListener(modeAuto, modeIdle, modeMovie);
 
-		JLabel labelSync = new JLabel("Sync");
+		labelSync = new JLabel("Sync (On)");
 		addToPanel(labelSync, 2, 0);
 
 		JRadioButton syncAuto = new JRadioButton("Auto");
 		syncAuto.setActionCommand(String.valueOf(SetSynchListener.AUTO));
+		syncAuto.setSelected(true);
 		addToPanel(syncAuto, 2, 1);
 
 		JRadioButton syncOn = new JRadioButton("On");
-		syncOn.setSelected(true);
 		syncOn.setActionCommand(String.valueOf(SetSynchListener.ON));
 		addToPanel(syncOn, 2, 2);
 
@@ -117,6 +120,14 @@ public class GUI extends JFrame {
 		c.gridwidth = 1;
 		c.gridheight = height;
 		buttonPanel.add(comp, c);
+	}
+	
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		String sync = buffer.getSync() == Buffer.SYNC_ON ? "On" : "Off";
+		labelSync.setText("Sync (" + sync + ")");
+		String mode = buffer.getMode() == Buffer.MODE_IDLE ? "Idle" : "Movie";
+		labelMode.setText("Mode (" + mode + ")");
 	}
 
 	public void addCamera() {
@@ -152,13 +163,13 @@ public class GUI extends JFrame {
 
 			switch (choice) {
 			case AUTO:
-//				buffer.setMode(realtime.server.OpCodes.set);
+				buffer.setGuiMode(Buffer.MODE_AUTO);
 				break;
 			case IDLE:
-				buffer.setMode(OpCodes.SET_IDLE);
+				buffer.setGuiMode(Buffer.MODE_IDLE);
 				break;
 			case MOVIE:
-				buffer.setMode(OpCodes.SET_MOVIE);
+				buffer.setGuiMode(Buffer.MODE_MOVIE);
 				break;
 			}
 		}
@@ -180,13 +191,13 @@ public class GUI extends JFrame {
 
 			switch (choice) {
 			case AUTO:
-//				buffer.setSynch(Buffer.MODE_AUTO);
+				buffer.setGuiSync(Buffer.SYNC_AUTO);
 				break;
 			case ON:
-				buffer.setSynch(Buffer.MODE_SYNCH);
+				buffer.setGuiSync(Buffer.SYNC_ON);
 				break;
 			case OFF:
-				buffer.setSynch(Buffer.MODE_ASYNCH);
+				buffer.setGuiSync(Buffer.SYNC_OFF);
 				break;
 			}
 		}

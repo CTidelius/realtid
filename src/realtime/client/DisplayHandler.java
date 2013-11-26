@@ -14,18 +14,17 @@ public class DisplayHandler extends Thread {
 	}
 
 	public void run() {
-		RawImage image = buffer.getAnyImage();
 		while (true) {
 			sync = buffer.getSync();
 			switch (sync) {
-			case Buffer.MODE_ASYNCH: {
+			case Buffer.SYNC_OFF: {
 				// Uppdatera guit här
+				RawImage image = buffer.getAnyImage();
 				gui.refreshPanel(image);
-				image = buffer.getAnyImage();
 				break;
 			}
 
-			case Buffer.MODE_SYNCH: {
+			case Buffer.SYNC_ON: {
 				// Uppdatera guit här
 				
 				//grab earliest image from each camera

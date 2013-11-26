@@ -30,6 +30,14 @@ public class SenderThread extends Thread {
 					os.write(msg);
 					break;
 				}
+				case OpCodes.SET_AUTO_ON: {
+					os.write(msg);
+					break;
+				}
+				case OpCodes.SET_AUTO_OFF: {
+					os.write(msg);
+					break;
+				}
 				default: {
 					System.out.println("Unrecognized msg from client " + msg);
 					System.exit(0);
