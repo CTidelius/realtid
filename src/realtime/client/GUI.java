@@ -121,12 +121,13 @@ public class GUI extends JFrame implements Observer {
 		c.gridheight = height;
 		buttonPanel.add(comp, c);
 	}
-	
+
 	public void update(Observable arg0, Object arg1) {
 		String sync = buffer.getSync() == Buffer.SYNC_ON ? "On" : "Off";
 		labelSync.setText("Sync (" + sync + ")");
 		String mode = buffer.getMode() == Buffer.MODE_IDLE ? "Idle" : "Movie";
 		labelMode.setText("Mode (" + mode + ")");
+		display.setLastMotionIndex(buffer.getLastMotionIndex());
 	}
 
 	public void addCamera() {
@@ -206,6 +207,7 @@ public class GUI extends JFrame implements Observer {
 		private int numCameras;
 		private ArrayList<Image> images;
 		private ArrayList<Long> delays;
+		private int lastMotionIndex;
 
 		public CameraDisplay() {
 			super();
@@ -219,13 +221,19 @@ public class GUI extends JFrame implements Observer {
 			for (int i = 0; i < images.size(); i++) {
 				g.drawImage(images.get(i), 340 * i, 0, null);
 				g.drawString(delays.get(i).toString(), 340 * i + 160, 250);
+				if (i == lastMotionIndex)
+					g.drawString("X", 340 * i, 300);
 			}
+		}
+
+		public void setLastMotionIndex(int lastMotionIndex) {
+			this.lastMotionIndex = lastMotionIndex;
 		}
 
 		public void setImage(RawImage rawImage) {
 			int index = rawImage.getIndex();
 			byte[] data = rawImage.getImage();
-			if(index >= numCameras) {
+			if (index >= numCameras) {
 				numCameras++;
 				images.add(new ImageIcon(data).getImage());
 				delays.add(rawImage.getDelay());

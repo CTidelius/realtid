@@ -63,6 +63,10 @@ public class Buffer extends Observable {
 		notifyObservers();
 		System.out.println("Setting mode to " + mode);
 	}
+	
+	public synchronized int getLastMotionIndex(){
+		return lastMotionIndex;
+	}
 
 	public synchronized void setSync(int sync) { // from displayhandler
 		if (this.sync == sync)
