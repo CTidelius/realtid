@@ -1,0 +1,103 @@
+body{
+background-color: #ddd;
+font-family:"Arial", serif;
+}
+
+h1 { 
+color: #FFF;
+margin-left: 20px;
+margin-right: 20px;
+}
+
+p { 
+color: #000;
+margin-left: 20px;
+margin-right: 20px;
+}
+
+p.name {
+text-decoration:underline;
+margin-bottom: -15px;
+}
+
+a {
+font-weight: bold;
+margin-left: 20px;
+margin-right: 20px;
+}
+
+a#current {
+color: #90A5B6;
+}
+
+a.standard {
+color:	black;
+}
+
+a.standard:visited {
+color: #888;
+}
+
+a.menu {
+text-decoration: none;
+color: white;
+font-variant:small-caps;
+}
+
+a.menu:hover {
+color: #90A5B6
+}
+
+div {
+background-color: #90A5B6;
+}
+
+div.container {
+width: 900px;
+height: auto;
+margin: 0 auto;
+}
+
+h2 {
+margin-left: 20px;
+}
+
+div.header {	
+width: inherit;
+height: auto;
+float: left;
+}
+
+div.menu {
+margin: 0 auto;
+padding: 0;
+width: inherit;
+float: left;
+height: auto;
+}
+
+div.menuitem {
+margin-left: 10px;
+padding: 4px;
+background-color: #888;
+width: auto;
+float: left;
+}
+
+div.menuitem:hover {
+background-color: #FFF;
+}
+
+div#current {
+background-color: #FFF;
+}
+
+div.main {
+background-color: #FFF;
+border-left: 1px solid #90A5B6;
+border-right: 1px solid #90A5B6;
+border-bottom: 1px solid #90A5B6;
+width: 898px;
+height: auto;
+float: left;
+}
