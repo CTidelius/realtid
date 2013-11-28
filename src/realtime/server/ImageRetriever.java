@@ -1,7 +1,7 @@
 package realtime.server;
 
-import se.lth.cs.fakecamera.Axis211A;
-import se.lth.cs.fakecamera.MotionDetector;
+import se.lth.cs.cameraproxy.Axis211A;
+import se.lth.cs.cameraproxy.MotionDetector;
 
 public class ImageRetriever extends Thread {
 	private Axis211A camera;
@@ -11,9 +11,9 @@ public class ImageRetriever extends Thread {
 	
 	public ImageRetriever(CameraServer monitor){
 		this.monitor = monitor;
-		this.camera = new Axis211A();
+		this.camera = new Axis211A("argus-1.student.lth.se", 9001);
 		buffer = new byte[Axis211A.IMAGE_BUFFER_SIZE + 4];
-		motionDetector = new MotionDetector();
+		motionDetector = new MotionDetector("argus-1.student.lth.se", 9001);
 	}
 	
 	public void run() {
@@ -26,7 +26,7 @@ public class ImageRetriever extends Thread {
 																	// image
 			byte[] img = new byte[buffer.length];
 			System.arraycopy(buffer, 0, img, 0, img.length);
-			monitor.putImage(buffer);
+			monitor.putImage(img);
 			if (motionDetector.detect())
 				monitor.onMotionDetected();
 		}

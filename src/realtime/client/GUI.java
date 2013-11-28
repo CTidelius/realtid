@@ -45,7 +45,7 @@ public class GUI extends JFrame implements Observer {
 
 		setupButtonPanel();
 
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(700, 400));
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
@@ -225,7 +225,7 @@ public class GUI extends JFrame implements Observer {
 				g.setColor(Color.RED);
 				if (i == lastMotionIndex) {
 					g.drawRect(340 * i, 0, 320, 240);
-					g.drawString("X", 340 * i + 160, 300);
+					g.drawString("X", 340 * i + 160, 265);
 				}
 				g.setColor(Color.BLACK);
 			}
@@ -242,7 +242,7 @@ public class GUI extends JFrame implements Observer {
 				numCameras++;
 				images.add(new ImageIcon(data).getImage());
 				delays.add(rawImage.getDelay());
-				setSize(340 * numCameras, 260);
+				setSize(340 * numCameras, 280);
 			} else {
 				images.set(index, new ImageIcon(data).getImage());
 				delays.set(index, rawImage.getDelay());

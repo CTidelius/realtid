@@ -42,8 +42,9 @@ public class ReceiverThread extends Thread {
 					buffer.setMode(Buffer.MODE_MOVIE, conn.getIndex());
 					break;
 				}
+				default: 
+					System.out.println("unrecognized msg " + msg);
 				}
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

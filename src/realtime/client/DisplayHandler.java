@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class DisplayHandler extends Thread {
 	private Buffer buffer;
 	private GUI gui;
-	private int sync;
 
 	public DisplayHandler(GUI gui, Buffer buffer) {
 		this.gui = gui;
