@@ -24,6 +24,7 @@ public class CameraConnection {
 		try {
 			this.index = CAMERA_INDEX;
 			CAMERA_INDEX++;
+			//socket = new Socket("argus-"+(index+1)+".student.lth.se", port);
 			socket = new Socket(server, port + index);
 			new SenderThread(socket.getOutputStream(), this).start();
 			new ReceiverThread(socket.getInputStream(), this, buffer).start();

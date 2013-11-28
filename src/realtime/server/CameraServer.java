@@ -3,19 +3,17 @@ package realtime.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayDeque;
-import java.util.Queue;
 
 public class CameraServer {
 	private boolean isIdle = true;
 	private boolean isAuto = true;
 	private byte[] lastImage;
 	private long lastImageSent;
-	private Queue<Integer> messagesToSend;
+	private IntQueue messagesToSend;
 	private ImageRetriever imageRetriever;
 
 	public CameraServer() {
-		messagesToSend = new ArrayDeque<Integer>();
+		messagesToSend = new IntQueue();
 		imageRetriever = new ImageRetriever(this);
 		imageRetriever.start();
 	}
@@ -75,7 +73,7 @@ public class CameraServer {
 		ServerSocket socket = null;
 
 		try {
-			socket = new ServerSocket(1337);
+			socket = new ServerSocket(1338);
 			System.out.println("Server running");
 			while (true) {
 				Socket connection = socket.accept();
