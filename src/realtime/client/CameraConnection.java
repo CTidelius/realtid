@@ -66,9 +66,11 @@ public class CameraConnection {
 		count++;
 		RawImage rawImage = null;
 		if((count % 400) > 200 && index != 0)
-			rawImage = new RawImage(data, index, timeDifference + 1500);
+			rawImage = new RawImage(data, index, timeDifference + 750);
+		else if((count % 400) < 200 && index == 0)
+			rawImage  = new RawImage(data, index, timeDifference + 750);
 		else
-			rawImage  = new RawImage(data, index, timeDifference);
+			rawImage = new RawImage(data, index, timeDifference);
 		buffer.putImage(rawImage);
 	}
 }

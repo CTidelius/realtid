@@ -65,7 +65,6 @@ public class Buffer extends Observable {
 				: OpCodes.SET_MOVIE);
 		setChanged();
 		notifyObservers();
-		System.out.println("Setting mode to " + mode);
 	}
 	
 	public synchronized int getLastMotionIndex(){
@@ -78,7 +77,6 @@ public class Buffer extends Observable {
 		this.sync = sync;
 		setChanged();
 		notifyObservers();
-		System.out.println("Setting sync to " + sync);
 	}
 
 	public synchronized void setGuiMode(int mode) { // from gui

@@ -16,7 +16,7 @@ public class DisplayHandler extends Thread {
 	public void run() {
 		while (true) {
 			ArrayList<RawImage> imgs = buffer.getImagesSync();
-			long diffDelay = Math.abs(imgs.get(0).getDelay() - imgs.get(1).getDelay());
+			long diffDelay = Math.abs(imgs.get(0).timestamp() - imgs.get(1).timestamp());
 			
 			if(diffDelay < 2000 && buffer.getSync() != Buffer.SYNC_ON && buffer.allowSyncToggle()) 
 				buffer.setSync(Buffer.SYNC_ON);

@@ -7,11 +7,11 @@ import se.lth.cs.cameraproxy.MotionDetector;
 
 public class ImageRetriever extends Thread {
 	private Axis211A camera;
-	private Monitor monitor;
+	private CameraServer monitor;
 	private byte[] buffer;
 	private MotionDetector motionDetector;
 	
-	public ImageRetriever(Monitor monitor){
+	public ImageRetriever(CameraServer monitor){
 		this.monitor = monitor;
 		this.camera = new Axis211A("argus-1.student.lth.se", 9001);
 		buffer = new byte[Axis211A.IMAGE_BUFFER_SIZE + 4];

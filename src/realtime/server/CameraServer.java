@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class Monitor {
+public class CameraServer {
 	private boolean isIdle = true;
 	private boolean isAuto = true;
 	private byte[] lastImage;
@@ -14,7 +14,7 @@ public class Monitor {
 	private Queue<Integer> messagesToSend;
 	private ImageRetriever imageRetriever;
 
-	public Monitor() {
+	public CameraServer() {
 		messagesToSend = new ArrayDeque<Integer>();
 		imageRetriever = new ImageRetriever(this);
 		imageRetriever.start();
@@ -71,7 +71,7 @@ public class Monitor {
 	}
 
 	public static void main(String[] args) {
-		Monitor m = new Monitor();
+		CameraServer m = new CameraServer();
 		ServerSocket socket = null;
 
 		try {

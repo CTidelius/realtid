@@ -5,12 +5,12 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 public class SenderThread extends Thread {
-	private Monitor monitor;
+	private CameraServer monitor;
 	private OutputStream os;
 	private boolean hasSentTime;
 	private long delay;
 
-	public SenderThread(Monitor monitor, OutputStream os, long delay) {
+	public SenderThread(CameraServer monitor, OutputStream os, long delay) {
 		this.monitor = monitor;
 		this.os = os;
 		this.delay = delay;

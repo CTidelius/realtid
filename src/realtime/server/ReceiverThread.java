@@ -5,10 +5,10 @@ import java.io.InputStream;
 
 public class ReceiverThread extends Thread {
 
-	private Monitor m;
+	private CameraServer m;
 	private InputStream is;
 
-	public ReceiverThread(Monitor m, InputStream is) {
+	public ReceiverThread(CameraServer m, InputStream is) {
 		this.m = m;
 		this.is = is;
 	}

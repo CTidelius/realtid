@@ -1,6 +1,7 @@
 package realtime.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -221,8 +222,12 @@ public class GUI extends JFrame implements Observer {
 			for (int i = 0; i < images.size(); i++) {
 				g.drawImage(images.get(i), 340 * i, 0, null);
 				g.drawString(delays.get(i).toString(), 340 * i + 160, 250);
-				if (i == lastMotionIndex)
-					g.drawString("X", 340 * i, 300);
+				g.setColor(Color.RED);
+				if (i == lastMotionIndex) {
+					g.drawRect(340 * i, 0, 320, 240);
+					g.drawString("X", 340 * i + 160, 300);
+				}
+				g.setColor(Color.BLACK);
 			}
 		}
 

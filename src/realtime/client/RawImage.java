@@ -16,9 +16,6 @@ public class RawImage {
 		timestamp = createTimestamp(data) + timeDiff;
 		this.delay = System.currentTimeMillis() - timestamp;
 		image = createImage(data);
-		for(int i = 0; i < 2; i++)
-			System.out.print(image[i] + " " + image[image.length - 1 - i] + " ");
-		System.out.println();
 		this.camIndex = camIndex;
 	}
 
