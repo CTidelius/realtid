@@ -58,6 +58,8 @@ public class Buffer extends Observable {
 			return;
 		if(mode == MODE_MOVIE)
 			lastMotionIndex = sourceCamera;
+		else
+			lastMotionIndex = -1;
 		this.mode = mode;
 		broadcastMessage(mode == MODE_IDLE ? OpCodes.SET_IDLE
 				: OpCodes.SET_MOVIE);
