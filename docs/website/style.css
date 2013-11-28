@@ -22,8 +22,6 @@ margin-bottom: -15px;
 
 a {
 font-weight: bold;
-margin-left: 20px;
-margin-right: 20px;
 }
 
 a#current {
@@ -31,7 +29,7 @@ color: #90A5B6;
 }
 
 a.standard {
-color:	black;
+color: #90A5B6;
 }
 
 a.standard:visited {
@@ -39,6 +37,7 @@ color: #888;
 }
 
 a.menu {
+margin: 0 15px;
 text-decoration: none;
 color: white;
 font-variant:small-caps;
