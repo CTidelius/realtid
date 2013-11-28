@@ -62,16 +62,29 @@ h2 {
 margin-left: 20px;
 }
 
-div.header {	
+div.header {
 width: inherit;
 height: auto;
 float: left;
 }
 
+div.headcontent {
+width:auto;
+height:auto;
+float:left;
+}
+
+div.img {
+float:right;
+position:relative;
+margin-right: 15px;
+margin-top: 15px;
+}
+
 div.menu {
 margin: 0 auto;
 padding: 0;
-width: inherit;
+width: auto;
 float: left;
 height: auto;
 }
@@ -82,6 +95,10 @@ padding: 4px;
 background-color: #888;
 width: auto;
 float: left;
+}
+
+div.menuitem:hover a {
+color: #90A5B6
 }
 
 div.menuitem:hover {
