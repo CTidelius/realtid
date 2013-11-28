@@ -39,7 +39,7 @@ public class ReceiverThread extends Thread {
 					break;
 				}
 				case OpCodes.SET_MOVIE: {
-					buffer.setMode(Buffer.MODE_MOVIE);
+					buffer.setMode(Buffer.MODE_MOVIE, conn.getIndex());
 					break;
 				}
 				}
