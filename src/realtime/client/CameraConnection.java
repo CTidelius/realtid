@@ -26,7 +26,7 @@ public class CameraConnection {
 			CAMERA_INDEX++;
 			socket = new Socket(server, port + index);
 			new SenderThread(socket.getOutputStream(), this).start();
-			new ReceiverThread(socket.getInputStream(), this).start();
+			new ReceiverThread(socket.getInputStream(), this, buffer).start();
 
 			timeDifference = System.currentTimeMillis();
 			requestMessage(OpCodes.GET_TIME);
@@ -42,8 +42,8 @@ public class CameraConnection {
 	}
 
 	public synchronized void requestMessage(int msg) {
-			messagesToSend.offer(msg);
-			notifyAll();
+		messagesToSend.offer(msg);
+		notifyAll();
 	}
 
 	public synchronized int getMessage() {
@@ -58,14 +58,17 @@ public class CameraConnection {
 	public synchronized void putTime(long time) {
 		long delay = (System.currentTimeMillis() - timeDifference) / 2;
 		timeDifference = (timeDifference + delay - time);
+		System.out.println("Timediff on camera " + index + ": " + timeDifference);
 	}
 
+	private int count;
 	public synchronized void putImage(byte[] data) {
-		RawImage rawImage = new RawImage(data, index, timeDifference);
+		count++;
+		RawImage rawImage = null;
+		if((count % 400) > 200 && index != 0)
+			rawImage = new RawImage(data, index, timeDifference + 1500);
+		else
+			rawImage  = new RawImage(data, index, timeDifference);
 		buffer.putImage(rawImage);
-	}
-	
-	public void setMovie() {
-		buffer.setMode(Buffer.MODE_MOVIE);
 	}
 }

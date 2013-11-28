@@ -48,6 +48,10 @@ public class Buffer extends Observable {
 		return sync;
 	}
 	
+	public synchronized boolean allowSyncToggle() {
+		return guiSync == SYNC_AUTO;
+	}
+	
 	public synchronized void setMode(int mode) { //from camera
 		if(this.mode == mode) return;
 		this.mode = mode;
@@ -89,8 +93,6 @@ public class Buffer extends Observable {
 		images.get(image.getIndex()).offer(image);
 		notifyAll();
 	}
-
-
 
 	private void broadcastMessage(int message) {
 		for (CameraConnection connection : connections) {
@@ -155,7 +157,8 @@ public class Buffer extends Observable {
 			boolean hasImages = true;
 			for (ArrayDeque<RawImage> q : images)
 				if(q.isEmpty()) hasImages = false;
-			if(hasImages) break;
+			if(hasImages && images.size() == 2) 
+				break;
 			try {
 				wait();
 			} catch (InterruptedException e) {

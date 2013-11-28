@@ -122,7 +122,6 @@ public class GUI extends JFrame implements Observer {
 		buttonPanel.add(comp, c);
 	}
 	
-	@Override
 	public void update(Observable arg0, Object arg1) {
 		String sync = buffer.getSync() == Buffer.SYNC_ON ? "On" : "Off";
 		labelSync.setText("Sync (" + sync + ")");

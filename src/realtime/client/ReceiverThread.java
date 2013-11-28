@@ -11,11 +11,13 @@ public class ReceiverThread extends Thread {
 	private InputStream is;
 	private CameraConnection conn;
 	private byte[] readBuffer;
+	private Buffer buffer;
 
-	public ReceiverThread(InputStream is, CameraConnection conn) {
+	public ReceiverThread(InputStream is, CameraConnection conn, Buffer buffer) {
 		this.is = is;
 		this.conn = conn;
 		this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
+		this.buffer = buffer;
 	}
 
 	public void run() {
@@ -25,6 +27,7 @@ public class ReceiverThread extends Thread {
 				switch (msg) {
 				case OpCodes.PUT_IMAGE: {
 					int n = 12 + Axis211A.IMAGE_BUFFER_SIZE;
+					this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
 					readBytes(n, is, readBuffer);
 					conn.putImage(readBuffer);
 					break;
@@ -36,7 +39,7 @@ public class ReceiverThread extends Thread {
 					break;
 				}
 				case OpCodes.SET_MOVIE: {
-					conn.setMovie();
+					buffer.setMode(Buffer.MODE_MOVIE);
 					break;
 				}
 				}
@@ -46,6 +49,7 @@ public class ReceiverThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
 	static void readBytes(int n, InputStream is, byte[] buffer) throws IOException {
 		int read = 0;
 		while(read < n) {

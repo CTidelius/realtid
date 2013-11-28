@@ -15,23 +15,20 @@ public class DisplayHandler extends Thread {
 
 	public void run() {
 		while (true) {
-			sync = buffer.getSync();
-			switch (sync) {
+			ArrayList<RawImage> imgs = buffer.getImagesSync();
+			long diffDelay = Math.abs(imgs.get(0).getDelay() - imgs.get(1).getDelay());
+			
+			if(diffDelay < 2000 && buffer.getSync() != Buffer.SYNC_ON && buffer.allowSyncToggle()) 
+				buffer.setSynch(Buffer.SYNC_ON);
+			else if(diffDelay > 2000 && buffer.getSync() != Buffer.SYNC_OFF && buffer.allowSyncToggle())
+				buffer.setSynch(Buffer.SYNC_OFF);
+			switch(buffer.getSync()) {
 			case Buffer.SYNC_OFF: {
-				// Uppdatera guit här
-				RawImage image = buffer.getAnyImage();
-				gui.refreshPanel(image);
+				gui.refreshPanel(imgs.get(0));
+				gui.refreshPanel(imgs.get(1));
 				break;
 			}
-
 			case Buffer.SYNC_ON: {
-				// Uppdatera guit här
-				
-				//grab earliest image from each camera
-				ArrayList<RawImage> imgs = buffer.getImagesSync();
-				
-				if(imgs.size() != 2) //temp, sync mode assumes two cameras for simplicity
-					continue;
 				RawImage earliest = (imgs.get(0).timestamp() < imgs.get(1).timestamp()) ? imgs.get(0) : imgs.get(1); //image with earliest timestamp
 				RawImage latest = (imgs.get(0).timestamp() > imgs.get(1).timestamp()) ? imgs.get(0) : imgs.get(1); //image with latest timestamp
 				long t0 = System.currentTimeMillis();
