@@ -53,9 +53,13 @@ public class Buffer extends Observable {
 		return guiSync == SYNC_AUTO;
 	}
 
-	public synchronized void setMode(int mode) { // from camera
+	public synchronized void setMode(int mode, int sourceCamera) { // from camera
 		if (this.mode == mode)
 			return;
+		if(mode == MODE_MOVIE)
+			lastMotionIndex = sourceCamera;
+		else
+			lastMotionIndex = -1;
 		this.mode = mode;
 		broadcastMessage(mode == MODE_IDLE ? OpCodes.SET_IDLE
 				: OpCodes.SET_MOVIE);
@@ -85,7 +89,7 @@ public class Buffer extends Observable {
 		if (mode == MODE_AUTO) // if auto was off it is now on
 			broadcastMessage(OpCodes.SET_AUTO_ON);
 		else
-			setMode(mode);
+			setMode(mode, -1);
 		this.guiMode = mode;
 	}
 
@@ -107,52 +111,6 @@ public class Buffer extends Observable {
 	private void broadcastMessage(int message) {
 		for (CameraConnection connection : connections) {
 			connection.requestMessage(message);
-		}
-	}
-
-	// get any image
-	public synchronized RawImage getAnyImage() {
-		while (true) {
-			int imageToPull = 0;
-			while (images.isEmpty())
-				// no cameras
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			waitForImageAvailable(); // make sure there is an image
-			while (images.get(imageToPull).isEmpty())
-				// might not be an image in camera 0
-				imageToPull++;
-
-			for (int i = imageToPull + 1; i < images.size(); i++) {
-				if (images.get(i).peek() == null)
-					continue;
-				if (images.get(imageToPull).peek().timestamp() < images.get(i)
-						.peek().timestamp()) {
-					imageToPull = i;
-				}
-			}
-			RawImage image = images.get(imageToPull).poll();
-			return image;
-		}
-	}
-
-	// wait until any image is available
-	private synchronized void waitForImageAvailable() {
-		while (true) {
-			boolean hasImage = false;
-			for (ArrayDeque<RawImage> q : images)
-				if (q.isEmpty() == false)
-					hasImage = true;
-			if (hasImage)
-				break;
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
