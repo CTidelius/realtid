@@ -20,6 +20,7 @@ public class Buffer extends Observable {
 	private int sync;
 	private int guiMode;
 	private int guiSync;
+	private int lastMotionIndex = -1;
 
 	private ArrayList<CameraConnection> connections;
 	private ArrayList<ArrayDeque<RawImage>> images;
@@ -43,47 +44,52 @@ public class Buffer extends Observable {
 	public synchronized int getMode() {
 		return mode;
 	}
-	
+
 	public synchronized int getSync() {
 		return sync;
 	}
-	
+
 	public synchronized boolean allowSyncToggle() {
 		return guiSync == SYNC_AUTO;
 	}
-	
-	public synchronized void setMode(int mode) { //from camera
-		if(this.mode == mode) return;
+
+	public synchronized void setMode(int mode) { // from camera
+		if (this.mode == mode)
+			return;
 		this.mode = mode;
-		broadcastMessage(mode == MODE_IDLE ? OpCodes.SET_IDLE : OpCodes.SET_MOVIE);
+		broadcastMessage(mode == MODE_IDLE ? OpCodes.SET_IDLE
+				: OpCodes.SET_MOVIE);
 		setChanged();
 		notifyObservers();
 		System.out.println("Setting mode to " + mode);
 	}
-	
-	public synchronized void setSynch(int sync) { //from displayhandler
-		if(this.sync == sync) return;
+
+	public synchronized void setSync(int sync) { // from displayhandler
+		if (this.sync == sync)
+			return;
 		this.sync = sync;
 		setChanged();
 		notifyObservers();
 		System.out.println("Setting sync to " + sync);
 	}
-	
-	public synchronized void setGuiMode(int mode) { //from gui
-		if(this.guiMode == mode) return;
-		if(this.guiMode == MODE_AUTO) //if auto was on it is now off
+
+	public synchronized void setGuiMode(int mode) { // from gui
+		if (this.guiMode == mode)
+			return;
+		if (this.guiMode == MODE_AUTO) // if auto was on it is now off
 			broadcastMessage(OpCodes.SET_AUTO_OFF);
-		if(mode == MODE_AUTO) //if auto was off it is now on
+		if (mode == MODE_AUTO) // if auto was off it is now on
 			broadcastMessage(OpCodes.SET_AUTO_ON);
 		else
 			setMode(mode);
 		this.guiMode = mode;
 	}
-	
-	public synchronized void setGuiSync(int sync) { //from gui
-		if(this.guiSync == sync) return;
+
+	public synchronized void setGuiSync(int sync) { // from gui
+		if (this.guiSync == sync)
+			return;
 		this.guiSync = sync;
-		if(this.guiSync != SYNC_AUTO)
+		if (this.guiSync != SYNC_AUTO)
 			this.sync = sync;
 		setChanged();
 		notifyObservers();
@@ -115,10 +121,12 @@ public class Buffer extends Observable {
 			while (images.get(imageToPull).isEmpty())
 				// might not be an image in camera 0
 				imageToPull++;
-			
+
 			for (int i = imageToPull + 1; i < images.size(); i++) {
-				if(images.get(i).peek() == null) continue;
-				if(images.get(imageToPull).peek().timestamp() < images.get(i).peek().timestamp()) {
+				if (images.get(i).peek() == null)
+					continue;
+				if (images.get(imageToPull).peek().timestamp() < images.get(i)
+						.peek().timestamp()) {
 					imageToPull = i;
 				}
 			}
@@ -132,8 +140,10 @@ public class Buffer extends Observable {
 		while (true) {
 			boolean hasImage = false;
 			for (ArrayDeque<RawImage> q : images)
-				if(q.isEmpty() == false) hasImage = true;
-			if(hasImage) break;
+				if (q.isEmpty() == false)
+					hasImage = true;
+			if (hasImage)
+				break;
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -156,8 +166,9 @@ public class Buffer extends Observable {
 		while (true) {
 			boolean hasImages = true;
 			for (ArrayDeque<RawImage> q : images)
-				if(q.isEmpty()) hasImages = false;
-			if(hasImages && images.size() == 2) 
+				if (q.isEmpty())
+					hasImages = false;
+			if (hasImages && images.size() == 2)
 				break;
 			try {
 				wait();
@@ -170,7 +181,8 @@ public class Buffer extends Observable {
 	// get image from specific camera
 	public synchronized RawImage getImage(int index, long timeout) {
 		long maxTime = System.currentTimeMillis() + timeout;
-		while (images.get(index).isEmpty() && System.currentTimeMillis() < maxTime) {
+		while (images.get(index).isEmpty()
+				&& System.currentTimeMillis() < maxTime) {
 			try {
 				wait(maxTime - System.currentTimeMillis());
 			} catch (InterruptedException e) {

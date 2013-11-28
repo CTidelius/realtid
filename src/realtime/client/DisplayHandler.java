@@ -19,9 +19,9 @@ public class DisplayHandler extends Thread {
 			long diffDelay = Math.abs(imgs.get(0).getDelay() - imgs.get(1).getDelay());
 			
 			if(diffDelay < 2000 && buffer.getSync() != Buffer.SYNC_ON && buffer.allowSyncToggle()) 
-				buffer.setSynch(Buffer.SYNC_ON);
+				buffer.setSync(Buffer.SYNC_ON);
 			else if(diffDelay > 2000 && buffer.getSync() != Buffer.SYNC_OFF && buffer.allowSyncToggle())
-				buffer.setSynch(Buffer.SYNC_OFF);
+				buffer.setSync(Buffer.SYNC_OFF);
 			switch(buffer.getSync()) {
 			case Buffer.SYNC_OFF: {
 				gui.refreshPanel(imgs.get(0));
