@@ -12,10 +12,12 @@ public class CameraServer {
 	private IntQueue messagesToSend;
 	private ImageRetriever imageRetriever;
 
-	public CameraServer(String[] args) {
+	public CameraServer(AxisCamera cam, int httpport) {
 		messagesToSend = new IntQueue();
-		imageRetriever = new ImageRetriever(this, args);
+		imageRetriever = new ImageRetriever(this, cam);
 		imageRetriever.start();
+		HTTPServer http = new HTTPServer(httpport, this);
+		http.start();
 	}
 
 	// Kallas när imageretriever lägger bild från kamera till monitor
@@ -25,7 +27,8 @@ public class CameraServer {
 
 	// Kallas när imageretriever upptäcker rörelse
 	public synchronized void onMotionDetected() {
-		if(!isIdle || !isAuto) return;
+		if (!isIdle || !isAuto)
+			return;
 		isIdle = false;
 		messagesToSend.offer(OpCodes.SET_MOVIE);
 		notifyAll();
@@ -34,10 +37,11 @@ public class CameraServer {
 	// Kallas när sender vill ha något att skicka
 	public synchronized int getMessage() {
 		while (true) {
-			if(messagesToSend.isEmpty() == false) return messagesToSend.poll();
+			if (messagesToSend.isEmpty() == false)
+				return messagesToSend.poll();
 			long nextSend = lastImageSent + (isIdle ? 5000 : 40);
 			long curTime = System.currentTimeMillis();
-			if(curTime >= nextSend) {
+			if (curTime >= nextSend) {
 				lastImageSent = curTime;
 				return OpCodes.PUT_IMAGE;
 			}
@@ -63,31 +67,40 @@ public class CameraServer {
 		isIdle = !status;
 		notifyAll();
 	}
-	
+
 	public synchronized void setAuto(boolean status) {
 		this.isAuto = status;
 	}
 
 	public static void main(String[] args) {
-		CameraServer m = new CameraServer(args);
-		ServerSocket socket = null;
 		int port = 0;
-		if(args == null || args.length == 0) {
+		if (args == null || args.length == 0) {
 			port = 1337;
+		} else {
+			try {
+				port = Integer.parseInt(args[0]);
+			} catch (NumberFormatException e) {
+				System.out.println(args[0] + " is not a valid port");
+				System.exit(0);
+			}
 		}
-		else
-			port = Integer.parseInt(args[0]);
+		AxisCamera cam = new AxisCamera(args);
+		CameraServer m = new CameraServer(cam, port + 1);
+		ServerSocket socket = null;
 
 		try {
 			socket = new ServerSocket(port);
-			System.out.println("Server running on port " + port);
+			System.out.println("Server running on port " + port
+					+ " and http server at port " + (port + 1));
 			while (true) {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
 
-				SenderThread sender = new SenderThread(m, connection.getOutputStream());
+				SenderThread sender = new SenderThread(m,
+						connection.getOutputStream());
 				sender.start();
-				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
+				ReceiverThread recv = new ReceiverThread(m,
+						connection.getInputStream());
 				recv.run(); // run on main thread
 				sender.interrupt();
 				connection.close();
