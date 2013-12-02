@@ -9,13 +9,13 @@ import se.lth.cs.cameraproxy.Axis211A;
 
 public class ReceiverThread extends Thread {
 	private InputStream is;
-	private CameraConnection conn;
+	private CameraConnection connection;
 	private byte[] readBuffer;
 	private Buffer buffer;
 
-	public ReceiverThread(InputStream is, CameraConnection conn, Buffer buffer) {
+	public ReceiverThread(InputStream is, CameraConnection connection, Buffer buffer) {
 		this.is = is;
-		this.conn = conn;
+		this.connection = connection;
 		this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
 		this.buffer = buffer;
 	}
@@ -29,17 +29,17 @@ public class ReceiverThread extends Thread {
 					int n = 12 + Axis211A.IMAGE_BUFFER_SIZE;
 					this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
 					readBytes(n, is, readBuffer);
-					conn.putImage(readBuffer);
+					connection.putImage(readBuffer);
 					break;
 				}
 				case OpCodes.PUT_TIME: {
 					byte[] tbuf = new byte[8];
 					readBytes(8, is, tbuf);
-					conn.putTime(ByteBuffer.wrap(tbuf).getLong());
+					connection.putTime(ByteBuffer.wrap(tbuf).getLong());
 					break;
 				}
 				case OpCodes.SET_MOVIE: {
-					buffer.setMode(Buffer.MODE_MOVIE, conn.getIndex());
+					buffer.setMode(Buffer.MODE_MOVIE, connection.getIndex());
 					break;
 				}
 				default: 
