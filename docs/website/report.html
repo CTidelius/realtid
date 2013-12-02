@@ -40,9 +40,28 @@
 	</div>
 	
 	<div class="main">
+		
+		<p>Running the client<br/>
+		Client.jar is a runnable JAR-file, to start it just open it with Java runtime or type "java -jar client.jar" in the terminal. There are 3 different checkboxes to change the update rate of images.<br/>
+		Auto: The server decides how fast images should be sent. Default is Idle, one image is sent every 5 seconds. If motion is detected on the server all cameras switch to Movie which is about 25 images per second. The UI will also display which camera triggered the latest Movie mode by drawing a red cross underneath the image.<br/>
+		Movie: Forces Movie mode on all servers which means they send about 25 images per second.<br/>
+		Idle: Forces Idle mode on all servers which means they send an image every 5 seconds.<br/>
+		There are also 3 checkboxes to change how the images are synced.<br/>
+		Auto: The client decides when to synchronize images. If the newest images were captured within 200ms of each other they will be displayed synchronized. Otherwise the client will switch display them instantly.<br/>
+		On: Always display images synchronized.<br/>
+		Off: Never display images synchronized.<br/>
+		To display the image feed of a camera, press the Add Camera button. You will be asked to enter a host name, which is the address of the camera server. The host name is usually "localhost" or "127.0.0.1". You will also need to enter a port number, this is the port that the camera server is listening on.</p>
+		
+<p>Running the server<br/>
+Server.jar needs to run from the terminal. Use <code>cd</code> to navigate to the folder containing server.jar using the terminal. It accepts 0, 1 or 3 arguments. Here are some examples<br/>
+<code>java -jar server.jar</code>: The server uses a fake camera to grab images and listens on port 1337.<br/>
+<code>java -jar server.jar 1000</code>: The server uses a fake camera to grab images and listens on port 1000.<br/>
+<code>java -jar server.jar 1000 argus-1.student.lth.se 6666</code>: The server grabs images from a cameraproxy on argus-1.student.lth.se. The server tries to reach the cameraproxy on port 6666 and listens for the client on port 1000.<br/>
+The server will also host a http server. The port number for the http server is the same as the server port + 1. So if the server listens on port 1000, the http server can be accessed at port 1001 by typing "127.0.0.1:1001" in your browser for example.<br/>
+
+
 
 		<h2>UML diagram for <code>realtime.client</code></h2>
-		
 		<img src="client.gif" class="uml" alt="realtime.client">
 
 		<h3><code>public class RunFromThisClass</code></h3>
