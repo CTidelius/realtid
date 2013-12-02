@@ -12,9 +12,9 @@ public class CameraServer {
 	private IntQueue messagesToSend;
 	private ImageRetriever imageRetriever;
 
-	public CameraServer() {
+	public CameraServer(String[] args) {
 		messagesToSend = new IntQueue();
-		imageRetriever = new ImageRetriever(this);
+		imageRetriever = new ImageRetriever(this, args);
 		imageRetriever.start();
 	}
 
@@ -69,20 +69,23 @@ public class CameraServer {
 	}
 
 	public static void main(String[] args) {
-		CameraServer m = new CameraServer();
+		CameraServer m = new CameraServer(args);
 		ServerSocket socket = null;
+		int port = 0;
+		if(args == null || args.length == 0) {
+			port = 1338;
+		}
+		else
+			port = Integer.parseInt(args[0]);
 
 		try {
-			socket = new ServerSocket(1337);
-			System.out.println("Server running");
+			socket = new ServerSocket(port);
+			System.out.println("Server running on port " + port);
 			while (true) {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
 
-				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0); // change
-																							// artificial
-																							// delay
-																							// here
+				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0);
 				sender.start();
 				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
 				recv.run(); // run on main thread

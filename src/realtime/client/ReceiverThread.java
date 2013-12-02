@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import realtime.server.OpCodes;
-import se.lth.cs.cameraproxy.Axis211A;
+import se.lth.cs.fakecamera.Axis211A;
 
 public class ReceiverThread extends Thread {
 	private InputStream is;
