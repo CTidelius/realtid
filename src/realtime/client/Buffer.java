@@ -34,8 +34,8 @@ public class Buffer extends Observable {
 		guiSync = SYNC_AUTO;
 	}
 
-	public synchronized void addCamera() {
-		CameraConnection connection = new CameraConnection(this);
+	public synchronized void addCamera(String host, int port) {
+		CameraConnection connection = new CameraConnection(this, host, port);
 		connections.add(connection);
 		images.add(new ArrayDeque<RawImage>());
 		notifyAll();
