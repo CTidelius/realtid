@@ -14,6 +14,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -145,10 +147,8 @@ public class GUI extends JFrame implements Observer {
 
 	private void createInputFrame() {
 		final JFrame frame = new JFrame("Enter host and port");
-
-		JButton okButton = new JButton("OK");
-		JButton cancelButton = new JButton("Cancel");
-
+		final JButton okButton = new JButton("OK");
+		final JButton cancelButton = new JButton("Cancel");
 		final JTextField hostInput = new JTextField(15);
 		final JTextField portInput = new JTextField(15);
 
@@ -166,6 +166,26 @@ public class GUI extends JFrame implements Observer {
 				buffer.addCamera(host, port);
 				pack();
 				frame.dispose();
+
+			}
+
+		});
+
+		hostInput.addKeyListener(new KeyListener() {
+
+			public void keyPressed(KeyEvent e) {
+
+			}
+
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					portInput.requestFocus();
+				}
+
+			}
+
+			public void keyTyped(KeyEvent e) {
+		
 			}
 
 		});
@@ -174,6 +194,37 @@ public class GUI extends JFrame implements Observer {
 
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
+			}
+
+		});
+
+		portInput.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					String host = hostInput.getText();
+					int port = 0;
+					try {
+						port = Integer.parseInt(portInput.getText());
+					} catch (NumberFormatException exc) {
+						JOptionPane.showMessageDialog(null, "Invalid port!");
+						return;
+					}
+					buffer.addCamera(host, port);
+					pack();
+					frame.dispose();
+				}
+
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
 			}
 
 		});
@@ -189,6 +240,7 @@ public class GUI extends JFrame implements Observer {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 		frame.pack();
+		
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
