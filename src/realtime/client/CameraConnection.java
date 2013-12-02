@@ -27,7 +27,6 @@ public class CameraConnection {
 			new ReceiverThread(socket.getInputStream(), this, buffer).start();
 
 			timeDifference = System.currentTimeMillis();
-			requestMessage(OpCodes.GET_TIME);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -51,11 +50,6 @@ public class CameraConnection {
 			} catch (InterruptedException e) {
 			}
 		return messagesToSend.poll();
-	}
-
-	public synchronized void putTime(long time) {
-		long delay = (System.currentTimeMillis() - timeDifference) / 2;
-		timeDifference = (timeDifference + delay - time);
 	}
 
 	private int count;

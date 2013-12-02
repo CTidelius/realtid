@@ -2,7 +2,6 @@ package realtime.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 import realtime.server.OpCodes;
 import se.lth.cs.cameraproxy.Axis211A;
@@ -32,18 +31,12 @@ public class ReceiverThread extends Thread {
 					connection.putImage(readBuffer);
 					break;
 				}
-				case OpCodes.PUT_TIME: {
-					byte[] tbuf = new byte[8];
-					readBytes(8, is, tbuf);
-					connection.putTime(ByteBuffer.wrap(tbuf).getLong());
-					break;
-				}
 				case OpCodes.SET_MOVIE: {
 					buffer.setMode(Buffer.MODE_MOVIE, connection.getIndex());
 					break;
 				}
 				default: 
-					System.out.println("unrecognized msg " + msg);
+					System.out.println("Unrecognized msg " + msg);
 				}
 			}
 		} catch (IOException e) {

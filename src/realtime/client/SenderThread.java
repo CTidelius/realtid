@@ -18,10 +18,6 @@ public class SenderThread extends Thread {
 			try {
 				int msg = connection.getMessage();
 				switch (msg) {
-				case OpCodes.GET_TIME: {
-					os.write(msg);
-					break;
-				}
 				case OpCodes.SET_IDLE: {
 					os.write(msg);
 					break;

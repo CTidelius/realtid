@@ -73,7 +73,7 @@ public class CameraServer {
 		ServerSocket socket = null;
 
 		try {
-			socket = new ServerSocket(1337);
+			socket = new ServerSocket(1338);
 			System.out.println("Server running");
 			while (true) {
 				Socket connection = socket.accept();

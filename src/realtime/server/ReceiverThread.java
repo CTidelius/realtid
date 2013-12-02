@@ -21,10 +21,6 @@ public class ReceiverThread extends Thread {
 				switch (msg) {
 				case OpCodes.DISCONNECT:
 					return;
-				case OpCodes.GET_TIME: {
-					m.requestMessageSend(OpCodes.PUT_TIME);
-					break;
-				}
 				case OpCodes.SET_IDLE: {
 					m.setMovieMode(false);
 					break;

@@ -1,7 +1,7 @@
 package realtime.server;
 
-import se.lth.cs.cameraproxy.Axis211A;
-import se.lth.cs.cameraproxy.MotionDetector;
+import se.lth.cs.fakecamera.Axis211A;
+import se.lth.cs.fakecamera.MotionDetector;
 
 public class ImageRetriever extends Thread {
 	private Axis211A camera;

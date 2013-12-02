@@ -166,6 +166,7 @@ public class GUI extends JFrame implements Observer {
 				}
 				buffer.addCamera(host, port);
 				pack();
+				frame.dispose();
 			}
 
 		});
@@ -187,7 +188,7 @@ public class GUI extends JFrame implements Observer {
 		pane.add(portInput);
 		pane.add(okButton);
 		pane.add(cancelButton);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setVisible(true);
 		frame.pack();
 
