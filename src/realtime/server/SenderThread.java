@@ -6,7 +6,6 @@ import java.io.OutputStream;
 public class SenderThread extends Thread {
 	private CameraServer monitor;
 	private OutputStream os;
-	private boolean hasSentTime;
 	private long delay;
 
 	public SenderThread(CameraServer monitor, OutputStream os, long delay) {
@@ -21,12 +20,11 @@ public class SenderThread extends Thread {
 				int msg = monitor.getMessage();
 				switch (msg) {
 				case OpCodes.PUT_IMAGE: {
-					if (hasSentTime) {
-						os.write(msg);
-						os.write(getLongBytes(System.currentTimeMillis()
-								- delay));
-						os.write(monitor.getLastImage());
-					}
+
+					os.write(msg);
+					os.write(getLongBytes(System.currentTimeMillis() - delay));
+					os.write(monitor.getLastImage());
+
 					break;
 				}
 				case OpCodes.SET_MOVIE: {
@@ -34,12 +32,8 @@ public class SenderThread extends Thread {
 					System.out.println("Telling client we should have movie");
 					break;
 				}
-				case OpCodes.PUT_TIME: {
-					os.write(msg);
-					os.write(getLongBytes(System.currentTimeMillis()));
-					hasSentTime = true;
-					break;
-				}
+				default:
+					System.out.println("Non standard value: " + msg);
 				}
 				os.flush();
 			} catch (IOException e) {

@@ -2,20 +2,19 @@ package realtime.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 import realtime.server.OpCodes;
 import se.lth.cs.fakecamera.Axis211A;
 
 public class ReceiverThread extends Thread {
 	private InputStream is;
-	private CameraConnection conn;
+	private CameraConnection connection;
 	private byte[] readBuffer;
 	private Buffer buffer;
 
-	public ReceiverThread(InputStream is, CameraConnection conn, Buffer buffer) {
+	public ReceiverThread(InputStream is, CameraConnection connection, Buffer buffer) {
 		this.is = is;
-		this.conn = conn;
+		this.connection = connection;
 		this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
 		this.buffer = buffer;
 	}
@@ -29,21 +28,15 @@ public class ReceiverThread extends Thread {
 					int n = 12 + Axis211A.IMAGE_BUFFER_SIZE;
 					this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
 					readBytes(n, is, readBuffer);
-					conn.putImage(readBuffer);
-					break;
-				}
-				case OpCodes.PUT_TIME: {
-					byte[] tbuf = new byte[8];
-					readBytes(8, is, tbuf);
-					conn.putTime(ByteBuffer.wrap(tbuf).getLong());
+					connection.putImage(readBuffer);
 					break;
 				}
 				case OpCodes.SET_MOVIE: {
-					buffer.setMode(Buffer.MODE_MOVIE, conn.getIndex());
+					buffer.setMode(Buffer.MODE_MOVIE, connection.getIndex());
 					break;
 				}
 				default: 
-					System.out.println("unrecognized msg " + msg);
+					System.out.println("Unrecognized msg " + msg);
 				}
 			}
 		} catch (IOException e) {

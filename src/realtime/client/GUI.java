@@ -3,12 +3,15 @@ package realtime.client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,8 +23,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements Observer {
@@ -49,6 +54,8 @@ public class GUI extends JFrame implements Observer {
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 	}
 
 	private void setupButtonPanel() {
@@ -132,8 +139,60 @@ public class GUI extends JFrame implements Observer {
 	}
 
 	public void addCamera() {
-		buffer.addCamera();
-		pack();
+		createInputFrame();
+
+	}
+
+	private void createInputFrame() {
+		final JFrame frame = new JFrame("Enter host and port");
+
+		JButton okButton = new JButton("OK");
+		JButton cancelButton = new JButton("Cancel");
+
+		final JTextField hostInput = new JTextField(15);
+		final JTextField portInput = new JTextField(15);
+
+		okButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent ae) {
+				String host = hostInput.getText();
+				int port = 0;
+				try {
+					port = Integer.parseInt(portInput.getText());
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Invalid port!");
+					return;
+				}
+				buffer.addCamera(host, port);
+				pack();
+				frame.dispose();
+			}
+
+		});
+
+		cancelButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent ae) {
+				frame.dispose();
+			}
+
+		});
+
+		Container pane = frame.getContentPane();
+		pane.setLayout(new GridLayout(3, 2));
+		pane.add(new JLabel("Host:"));
+		pane.add(hostInput);
+		pane.add(new JLabel("Port:"));
+		pane.add(portInput);
+		pane.add(okButton);
+		pane.add(cancelButton);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setVisible(true);
+		frame.pack();
+
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
+
 	}
 
 	public void refreshPanel(RawImage image) {

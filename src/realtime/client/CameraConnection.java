@@ -13,24 +13,20 @@ public class CameraConnection {
 	private int index;
 	private ArrayDeque<Integer> messagesToSend;
 
-	private final String server = "127.0.0.1";
-	private final int port = 1337;
-
 	private static int CAMERA_INDEX = 0;
 
-	public CameraConnection(Buffer buffer) {
+	public CameraConnection(Buffer buffer, String host, int port) {
 		this.buffer = buffer;
 		messagesToSend = new ArrayDeque<Integer>();
 		try {
 			this.index = CAMERA_INDEX;
 			CAMERA_INDEX++;
 			//socket = new Socket("argus-"+(index+1)+".student.lth.se", port);
-			socket = new Socket(server, port + index);
+			socket = new Socket(host, port);
 			new SenderThread(socket.getOutputStream(), this).start();
 			new ReceiverThread(socket.getInputStream(), this, buffer).start();
 
 			timeDifference = System.currentTimeMillis();
-			requestMessage(OpCodes.GET_TIME);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -54,11 +50,6 @@ public class CameraConnection {
 			} catch (InterruptedException e) {
 			}
 		return messagesToSend.poll();
-	}
-
-	public synchronized void putTime(long time) {
-		long delay = (System.currentTimeMillis() - timeDifference) / 2;
-		timeDifference = (timeDifference + delay - time);
 	}
 
 	private int count;
