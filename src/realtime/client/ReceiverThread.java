@@ -15,7 +15,7 @@ public class ReceiverThread extends Thread {
 	public ReceiverThread(InputStream is, CameraConnection connection, Buffer buffer) {
 		this.is = is;
 		this.connection = connection;
-		this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
+		this.readBuffer = new byte[4 + Axis211A.IMAGE_BUFFER_SIZE];
 		this.buffer = buffer;
 	}
 
@@ -25,8 +25,7 @@ public class ReceiverThread extends Thread {
 				int msg = is.read();
 				switch (msg) {
 				case OpCodes.PUT_IMAGE: {
-					int n = 12 + Axis211A.IMAGE_BUFFER_SIZE;
-					this.readBuffer = new byte[12 + Axis211A.IMAGE_BUFFER_SIZE];
+					int n = 4 + Axis211A.IMAGE_BUFFER_SIZE;
 					readBytes(n, is, readBuffer);
 					connection.putImage(readBuffer);
 					break;

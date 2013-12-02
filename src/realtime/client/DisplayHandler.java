@@ -38,7 +38,7 @@ public class DisplayHandler extends Thread {
 				long waitTime = t0 + (latest.timestamp() - earliest.timestamp());
 				while(System.currentTimeMillis() < waitTime) {
 					gui.refreshPanel(earliest);
-					RawImage checkUpdate = buffer.getImage(earliest.getIndex(), waitTime - System.currentTimeMillis()); 
+					RawImage checkUpdate = buffer.getImageFromCamera(earliest.getIndex(), waitTime - System.currentTimeMillis()); 
 					if(checkUpdate != null)
 						earliest = checkUpdate;
 					waitTime = t0 + latest.timestamp() - earliest.timestamp();
