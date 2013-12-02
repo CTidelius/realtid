@@ -10,7 +10,10 @@ public class ImageRetriever extends Thread {
 	}
 
 	public void run() {
-		camera.connect();
+		if(!camera.connect()) {
+			System.out.println("Camera failed to connect");
+			System.exit(0);
+		}
 		while (!isInterrupted()) {
 			monitor.putImage(camera.getJPEG());
 			if (camera.detect())

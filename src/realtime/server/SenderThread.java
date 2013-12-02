@@ -27,7 +27,6 @@ public class SenderThread extends Thread {
 				}
 				case OpCodes.SET_MOVIE: {
 					os.write(msg);
-					System.out.println("Telling client we should have movie");
 					break;
 				}
 				default:

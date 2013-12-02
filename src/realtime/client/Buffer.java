@@ -1,8 +1,11 @@
 package realtime.client;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Observable;
+
+import javax.swing.JOptionPane;
 
 import realtime.server.OpCodes;
 
@@ -35,10 +38,15 @@ public class Buffer extends Observable {
 	}
 
 	public synchronized void addCamera(String host, int port) {
-		CameraConnection connection = new CameraConnection(this, host, port);
-		connections.add(connection);
-		images.add(new ArrayDeque<RawImage>());
-		notifyAll();
+		try {
+			CameraConnection connection = new CameraConnection(this, host, port);
+			connections.add(connection);
+			images.add(new ArrayDeque<RawImage>());
+			notifyAll();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Could not connect to " + host
+					+ " at port " + port);
+		}
 	}
 
 	public synchronized int getMode() {
@@ -53,10 +61,11 @@ public class Buffer extends Observable {
 		return guiSync == SYNC_AUTO;
 	}
 
-	public synchronized void setMode(int mode, int sourceCamera) { // from camera
+	public synchronized void setMode(int mode, int sourceCamera) { // from
+																	// camera
 		if (this.mode == mode)
 			return;
-		if(mode == MODE_MOVIE)
+		if (mode == MODE_MOVIE)
 			lastMotionIndex = sourceCamera;
 		else
 			lastMotionIndex = -1;
@@ -66,8 +75,8 @@ public class Buffer extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-	
-	public synchronized int getLastMotionIndex(){
+
+	public synchronized int getLastMotionIndex() {
 		return lastMotionIndex;
 	}
 
