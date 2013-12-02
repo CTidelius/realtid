@@ -1,0 +1,28 @@
+<h1>Evaluation</h1>
+
+	Names
+		Daniel Olsson		atf10dol
+		Elliot Jalgard		ada10eja
+		Mattias Simonsson	dat11msi
+		Oscar Gunnesson		ama10ogu
+
+* What we learned
+It's important to agree on a certain protocol so you speak the same "language".
+Server and client interactions.
+Some of the members were newly introduced to Git (from SVN) and liked it more.
+Refreshed knowledge in CSS and HTML.
+
+* Difficulties we faced
+Debugging and realizing why a certain byte is wrong in a certain package (jpg sizes were different ones, threw us off the table)
+Concurrent access to arrays on server side.
+Identifying problems in concurrent programming, because it's difficult to debug and know which threads use which objects and why certain data is corrupted
+Sending and reading to and from a socket and catching all exceptions and errors.
+
+* What we would do different if we would have done it again
+Would have made it more clear between members on who should focus on what part of the program
+Discuss solutions with the whole group
+
+* Final words
+It was surprisingly successful. The class diagram was of big help and the whole work process went very smoothly.
+
+ 
