@@ -20,11 +20,9 @@ public class SenderThread extends Thread {
 				int msg = monitor.getMessage();
 				switch (msg) {
 				case OpCodes.PUT_IMAGE: {
-
 					os.write(msg);
 					os.write(getLongBytes(System.currentTimeMillis() - delay));
 					os.write(monitor.getLastImage());
-
 					break;
 				}
 				case OpCodes.SET_MOVIE: {

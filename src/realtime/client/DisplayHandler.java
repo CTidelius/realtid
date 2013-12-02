@@ -15,11 +15,15 @@ public class DisplayHandler extends Thread {
 	public void run() {
 		while (true) {
 			ArrayList<RawImage> imgs = buffer.getImagesSync();
+			if(imgs.size() == 1) {
+				gui.refreshPanel(imgs.get(0));
+				continue;
+			}
 			long diffDelay = Math.abs(imgs.get(0).timestamp() - imgs.get(1).timestamp());
 			
-			if(diffDelay < 2000 && buffer.getSync() != Buffer.SYNC_ON && buffer.allowSyncToggle()) 
+			if(diffDelay < 200 && buffer.getSync() != Buffer.SYNC_ON && buffer.allowSyncToggle()) 
 				buffer.setSync(Buffer.SYNC_ON);
-			else if(diffDelay > 2000 && buffer.getSync() != Buffer.SYNC_OFF && buffer.allowSyncToggle())
+			else if(diffDelay > 200 && buffer.getSync() != Buffer.SYNC_OFF && buffer.allowSyncToggle())
 				buffer.setSync(Buffer.SYNC_OFF);
 			switch(buffer.getSync()) {
 			case Buffer.SYNC_OFF: {

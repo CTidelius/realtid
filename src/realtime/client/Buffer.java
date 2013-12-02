@@ -128,7 +128,7 @@ public class Buffer extends Observable {
 			for (ArrayDeque<RawImage> q : images)
 				if (q.isEmpty())
 					hasImages = false;
-			if (hasImages && images.size() == 2)
+			if (hasImages && images.size() > 0)
 				break;
 			try {
 				wait();

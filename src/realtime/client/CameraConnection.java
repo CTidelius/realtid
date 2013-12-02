@@ -8,7 +8,6 @@ import realtime.server.*;
 
 public class CameraConnection {
 	private Socket socket;
-	private long timeDifference;
 	private Buffer buffer;
 	private int index;
 	private ArrayDeque<Integer> messagesToSend;
@@ -25,8 +24,6 @@ public class CameraConnection {
 			socket = new Socket(host, port);
 			new SenderThread(socket.getOutputStream(), this).start();
 			new ReceiverThread(socket.getInputStream(), this, buffer).start();
-
-			timeDifference = System.currentTimeMillis();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -52,17 +49,9 @@ public class CameraConnection {
 		return messagesToSend.poll();
 	}
 
-	private int count;
 	public synchronized void putImage(byte[] data) {
-		count++;
 		RawImage rawImage = null;
-//		int x = (count % 1150);
-//		if(x < 350 && index == 0)
-//			rawImage = new RawImage(data, index, timeDifference + 1000);
-//		if(x > 700 && index == 1)
-//			rawImage = new RawImage(data, index, timeDifference + 1000);
-//		else
-		rawImage = new RawImage(data, index, timeDifference);
+		rawImage = new RawImage(data, index);
 		buffer.putImage(rawImage);
 	}
 }

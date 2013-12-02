@@ -12,17 +12,10 @@ public class RawImage {
 	 * Create an image and a timestamp out of a byte array (size of 8 +
 	 * Axis211A.IMAGE_BUFFER_SIZE)
 	 */
-	public RawImage(byte[] data, int camIndex, long timeDiff) {
-		timestamp = createTimestamp(data) + timeDiff;
-		this.delay = System.currentTimeMillis() - timestamp;
+	public RawImage(byte[] data, int camIndex) {
 		image = createImage(data);
+		this.delay = System.currentTimeMillis() - timestamp;
 		this.camIndex = camIndex;
-	}
-
-	// Create timestamp out of data array
-	private long createTimestamp(byte[] data) {
-		ByteBuffer bb = ByteBuffer.wrap(data, 0, 8);
-		return bb.getLong();
 	}
 
 	// Create image array out of data array
@@ -30,6 +23,9 @@ public class RawImage {
 		int lengthOfImage = ByteBuffer.wrap(data, 8, 4).getInt();
 		byte[] tempImage = new byte[lengthOfImage];
 		System.arraycopy(data, 12, tempImage, 0, lengthOfImage);
+		this.timestamp = ((tempImage[25] & 255L) << 24
+				| (tempImage[26] & 255L) << 16 | (tempImage[27] & 255L) << 8 | tempImage[28] & 255L)
+				* 1000 + (tempImage[29] & 255L) * 10;
 		return tempImage;
 	}
 
@@ -44,7 +40,7 @@ public class RawImage {
 	public long timestamp() {
 		return timestamp;
 	}
-	
+
 	public long getDelay() {
 		return delay;
 	}
