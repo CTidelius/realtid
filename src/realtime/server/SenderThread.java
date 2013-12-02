@@ -6,12 +6,10 @@ import java.io.OutputStream;
 public class SenderThread extends Thread {
 	private CameraServer monitor;
 	private OutputStream os;
-	private long delay;
 
-	public SenderThread(CameraServer monitor, OutputStream os, long delay) {
+	public SenderThread(CameraServer monitor, OutputStream os) {
 		this.monitor = monitor;
 		this.os = os;
-		this.delay = delay;
 	}
 
 	public void run() {
@@ -21,7 +19,6 @@ public class SenderThread extends Thread {
 				switch (msg) {
 				case OpCodes.PUT_IMAGE: {
 					os.write(msg);
-					os.write(getLongBytes(System.currentTimeMillis() - delay));
 					os.write(monitor.getLastImage());
 					break;
 				}
@@ -29,8 +26,9 @@ public class SenderThread extends Thread {
 					os.write(msg);
 					break;
 				}
-				default:
-					System.out.println("Non standard value: " + msg);
+				default: {
+					System.out.println("Unrecognized operation code: " + msg);
+				}
 				}
 				os.flush();
 			} catch (IOException e) {
@@ -38,18 +36,4 @@ public class SenderThread extends Thread {
 			}
 		}
 	}
-
-	private byte[] getLongBytes(long v) {
-		byte[] writeBuffer = new byte[8];
-		writeBuffer[0] = (byte) (v >>> 56);
-		writeBuffer[1] = (byte) (v >>> 48);
-		writeBuffer[2] = (byte) (v >>> 40);
-		writeBuffer[3] = (byte) (v >>> 32);
-		writeBuffer[4] = (byte) (v >>> 24);
-		writeBuffer[5] = (byte) (v >>> 16);
-		writeBuffer[6] = (byte) (v >>> 8);
-		writeBuffer[7] = (byte) (v >>> 0);
-		return writeBuffer;
-	}
-
 }

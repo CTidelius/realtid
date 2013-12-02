@@ -73,7 +73,7 @@ public class CameraServer {
 		ServerSocket socket = null;
 		int port = 0;
 		if(args == null || args.length == 0) {
-			port = 1338;
+			port = 1337;
 		}
 		else
 			port = Integer.parseInt(args[0]);
@@ -85,7 +85,7 @@ public class CameraServer {
 				Socket connection = socket.accept();
 				System.out.println("Server accepted connection");
 
-				SenderThread sender = new SenderThread(m, connection.getOutputStream(), 0);
+				SenderThread sender = new SenderThread(m, connection.getOutputStream());
 				sender.start();
 				ReceiverThread recv = new ReceiverThread(m, connection.getInputStream());
 				recv.run(); // run on main thread

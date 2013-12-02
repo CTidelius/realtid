@@ -61,8 +61,7 @@ public class Buffer extends Observable {
 		return guiSync == SYNC_AUTO;
 	}
 
-	public synchronized void setMode(int mode, int sourceCamera) { // from
-																	// camera
+	public synchronized void setMode(int mode, int sourceCamera) {
 		if (this.mode == mode)
 			return;
 		if (mode == MODE_MOVIE)
@@ -80,7 +79,7 @@ public class Buffer extends Observable {
 		return lastMotionIndex;
 	}
 
-	public synchronized void setSync(int sync) { // from displayhandler
+	public synchronized void setSync(int sync) {
 		if (this.sync == sync)
 			return;
 		this.sync = sync;
@@ -88,19 +87,19 @@ public class Buffer extends Observable {
 		notifyObservers();
 	}
 
-	public synchronized void setGuiMode(int mode) { // from gui
+	public synchronized void setGuiMode(int mode) {
 		if (this.guiMode == mode)
 			return;
-		if (this.guiMode == MODE_AUTO) // if auto was on it is now off
+		if (this.guiMode == MODE_AUTO)
 			broadcastMessage(OpCodes.SET_AUTO_OFF);
-		if (mode == MODE_AUTO) // if auto was off it is now on
+		if (mode == MODE_AUTO)
 			broadcastMessage(OpCodes.SET_AUTO_ON);
 		else
 			setMode(mode, -1);
 		this.guiMode = mode;
 	}
 
-	public synchronized void setGuiSync(int sync) { // from gui
+	public synchronized void setGuiSync(int sync) {
 		if (this.guiSync == sync)
 			return;
 		this.guiSync = sync;
@@ -121,7 +120,6 @@ public class Buffer extends Observable {
 		}
 	}
 
-	// get one image from each camera
 	public synchronized ArrayList<RawImage> getImagesSync() {
 		ArrayList<RawImage> list = new ArrayList<RawImage>();
 		waitForImagesAvailable();
@@ -130,7 +128,6 @@ public class Buffer extends Observable {
 		return list;
 	}
 
-	// wait until all cameras have available images
 	private synchronized void waitForImagesAvailable() {
 		while (true) {
 			boolean hasImages = true;
@@ -147,8 +144,7 @@ public class Buffer extends Observable {
 		}
 	}
 
-	// get image from specific camera
-	public synchronized RawImage getImage(int index, long timeout) {
+	public synchronized RawImage getImageFromCamera(int index, long timeout) {
 		long maxTime = System.currentTimeMillis() + timeout;
 		while (images.get(index).isEmpty()
 				&& System.currentTimeMillis() < maxTime) {

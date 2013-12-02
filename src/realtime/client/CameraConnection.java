@@ -2,10 +2,7 @@ package realtime.client;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayDeque;
-
-import javax.swing.JOptionPane;
 
 public class CameraConnection {
 	private Socket socket;
