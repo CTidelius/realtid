@@ -34,8 +34,9 @@ public class ReceiverThread extends Thread {
 					buffer.setMode(Buffer.MODE_MOVIE, connection.getIndex());
 					break;
 				}
-				default: 
-					System.out.println("Unrecognized msg " + msg);
+				default: {
+					System.out.println("Unrecognized operation code: " + msg);
+				}
 				}
 			}
 		} catch (IOException e) {

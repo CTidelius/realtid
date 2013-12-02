@@ -2,6 +2,7 @@ package realtime.client;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
 import realtime.server.*;
 
 public class SenderThread extends Thread {
@@ -35,8 +36,7 @@ public class SenderThread extends Thread {
 					break;
 				}
 				default: {
-					System.out.println("Unrecognized msg from client " + msg);
-					System.exit(0);
+					System.out.println("Unrecognized operation code: " + msg);
 				}
 				}
 			} catch (IOException e) {

@@ -38,8 +38,7 @@ public class ReceiverThread extends Thread {
 					break;
 				}
 				default: {
-					System.out.println("Unrecognized msg " + msg);
-					System.exit(0);
+					System.out.println("Unrecognized operation code: " + msg);
 				}
 				}
 			}

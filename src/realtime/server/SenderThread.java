@@ -26,8 +26,9 @@ public class SenderThread extends Thread {
 					os.write(msg);
 					break;
 				}
-				default:
-					System.out.println("Non standard value: " + msg);
+				default: {
+					System.out.println("Unrecognized operation code: " + msg);
+				}
 				}
 				os.flush();
 			} catch (IOException e) {
