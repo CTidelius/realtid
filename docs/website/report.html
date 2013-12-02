@@ -13,23 +13,23 @@
 
 		<div class="headcontent">
 
-		<h1>EDA040 Real-time programming</h1>
+		<h1><code>EDA040 Real-time programming</code></h1>
 
 		<div class="menu">
 			
 			<div class="menuitem"><a class="menu" href="index.html">presentation</a>
 			</div>
 
-			<div class="menuitem" id="current"><a id="current" class="menu" href="report.html">report</a>
+			<div class="menuitem" id="current"><a id="current" class="menu" href="report.html">reference manual</a>
 			</div>
 
 			<div class="menuitem"><a class="menu" href="downloads.html">downloads</a>
 			</div>
 
-			<div class="menuitem"><a class="menu" href="runinstruction.html">run instruction</a>
+			<div class="menuitem"><a class="menu" href="credits.html">summary</a>
 			</div>
 
-			<div class="menuitem"><a class="menu" href="credits.html">credits</a>
+			<div class="menuitem"><a class="menu" href="authors.html">authors</a>
 			</div>
 
 		</div>
@@ -41,15 +41,94 @@
 	
 	<div class="main">
 
-
-		<!-- innehåll för sidan -->	
-
-		<p>This is dog</p>
+		<h2>UML diagram for <code>realtime.client</code></h2>
 		
-		<img src="http://www.milesteves.com/gallery/d/623-4/Hell+Hound.jpg" alt="sötiszz">
+		<img src="client.gif" class="uml" alt="realtime.client">
 
+		<h3><code>public class RunFromThisClass</code></h3>
+		<p><code>main</code> method, starts the client.</p>
+
+		<h3><code>public class RawImage</code></h3>
+		<p><code>image[]</code><br/>Byte array for a jpeg.<br/><br/>
+		<code>timestamp</code><br/>Long containing the timestamp for when the jpeg was 			created.<br/><br/>
+		<code>camIndex</code><br/>Index for what camera the jpeg came from.<br/><br/>
+		<code>delay</code><br/>The response time for the server.</p>
+
+		<h3><code>public class Buffer extends Observable</code></h3>
+
+<p><code>public synchronized void setMode(int mode, int sourceCamera)<br/>
+public synchronized void setGuiMode(int mode)</code><br/>
+Both these methods sends a message to the each of the camera servers and tells them
+which mode is currently running.
+<br/><br/>
+<code>public synchronized ArrayList&lt;RawImage&gt; getImagesSync()</code><br/>
+When called it returns the most recent taken image from each camera. It calls on
+<code>waitForImagesAvailable()</code> which makes sure there are pictures from each camera. If not, it simply waits.
+
+		<h3><code>public class DisplayHandler extends Thread</code></h3>
+		<p><code>DisplayHandler</code>	 is a thread which handles when to draw pictures on the gui.<br/><br/>
+
+<code>public void run()</code><br/>
+<code>DisplayHandler</code> draws image depending on the current mode the cameras are running.
+If it's not on synch or only one of the cameras contains pictures. It simply gets
+and makes the gui draw the pictures as fast as possible.<br/><br/>
+If the synch is on, <code>DisplayHandler</code> gets one picture of each camera from the buffer and
+it calculates the difference between the two pictures. It then posts the one picture 
+taken first and waits the time difference. While <code>DisplayHandler</code> is waiting it's looking
+for new pictures from the camera that has already posted it's picture to post. When the
+waiting time has been fullfilled, it tells the gui to draw the later picture.</p>
+
+		<h3><code>public class GUI extends JFrame implements Observer</code></h3>
+		<p><code>public void refreshPanel(RawImage image)</code><br/>
+This method is called if the gui should update it's camera picturs. 
+<br/><br/>
+<code>public void update(Observable arg0, Object arg1)</code><br/>
+The gui is observing the buffer class. When mode is changed in buffer
+whis method is called which updates the showing mode in the gui.
+<br/><br/>
+Rest of the methods and private classes are just for creating the gui
+or handling events.</p>
+
+		<h3><code>public class CameraConnection</code></h3>
+		<p></p>
+
+		<h3><code>public class ReceiverThread extends Thread</code></h3>
+		<p>A thread class which retrieves messages from the server and puts to the client.</p>
+
+		<h3><code>public class SenderThread extends Thread</code></h3>
+		<p>A thread class which gets messages from the client and sends to the server.
+</p>
+
+
+		<h2>UML diagram for <code>realtime.server</code></h2>
+
+		<img src="server.gif" class="uml" alt="realtime.server">
+
+		<h3><code>public class OpCodes</code></h3>
+		<p>Contains operation codes for identifying different kinds of packages sent between server and client.</p>
+
+		<h3><code>public class CameraServer</code></h3>
+		<p></p>
+	
+		<h3><code>public class IntQueue</code></h3>
+		<p>Replacement for an <code>ArrayDeque</code>. Needed in order to be able to compile to C code</p>
+
+		<h3><code>public class ImageRetriever extends Thread</code></h3>
+		<p>Thread constantly retrieving images from the camera, offering them to the monitor. Also checks for motiondetection and keeps the monitor updated on any changes.</p>
+
+		<h3><code>public class ReceiverThread extends Thread</code></h3>
+		<p></p>
+
+		<h3><code>public class SenderThread extends Thread</code></h3>
+		<p></p>
+
+		<h3><code>public class AxisCamera</code></h3>
+		<p></p>
+
+		<h3><code>public class HTTPServer</code></h3>
+		<p></p>
 	</div>
-
+<div class="fill"><p/></div>
 </div>
 </body>
 </html>

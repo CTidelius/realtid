@@ -9,6 +9,11 @@ margin-left: 20px;
 margin-right: 20px;
 }
 
+h3 {
+margin-left: 20px;
+margin-bottom: -15px;
+}
+
 p { 
 color: #000;
 margin-left: 20px;
@@ -36,6 +41,10 @@ a.standard:visited {
 color: #888;
 }
 
+a.standard: {
+color: #888;
+}
+
 a.menu {
 margin: 0 15px;
 text-decoration: none;
@@ -52,8 +61,13 @@ background-color: #90A5B6;
 }
 
 div.container {
-width: 900px;
+width: 1000px;
 height: auto;
+margin: 0 auto;
+}
+
+img.uml {
+display: block;
 margin: 0 auto;
 }
 
@@ -93,7 +107,7 @@ margin-left: 10px;
 padding: 4px;
 background-color: #888;
 width: auto;
-float: left;
+float: left;		
 }
 
 div.menuitem:hover a {
@@ -113,7 +127,13 @@ background-color: #FFF;
 border-left: 1px solid #90A5B6;
 border-right: 1px solid #90A5B6;
 border-bottom: 1px solid #90A5B6;
-width: 898px;
+width: 998px;
 height: auto;
 float: left;
+}
+
+div.fill {
+float:left;
+height:20px;
+background-color:#ddd;
 }
